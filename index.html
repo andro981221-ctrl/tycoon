@@ -419,7 +419,7 @@ function freshState(){
     zones: [0,1,2].map(i => ({
       id:i, name:`${i+1}구역`,
       yeongGeup:0, roadBuilt:false,
-      resortBuilt:false, carbonUsed:false, plantUsed:false,
+      resortBuilt:false, carbonUsed:false,
       fireResistStacks:0, timberBanTurns:0, lastGatherYear:-99, lastTendYear:-99
     })),
     log: [], ended:false
@@ -438,9 +438,9 @@ function getActions(zone){
   const yg = zone.yeongGeup;
   return [
     { key:'plant', name:'조림', cost:'자금 -2 · 건강도 +2 · 만족도 +1',
-      eff:'2턴 후 개벌·택벌 가능', cond:'0영급 상태에서 구역당 1회만 가능',
-      enabled: yg===0 && !zone.plantUsed,
-      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.yeongGeup=0; zone.plantUsed=true; log(`[${zone.name}] 🌱 조림 완료`); } },
+      eff:'2턴 후 개벌·택벌 가능 (개벌 후 재조림 가능)', cond:'0영급 상태에서만 가능',
+      enabled: yg===0,
+      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.yeongGeup=0; log(`[${zone.name}] 🌱 조림 완료`); } },
     { key:'road', name:'임도 설치', cost:'자금 -1 · 건강도 -1',
       eff:'미설치 시 목재 생산 불가 · 산불 피해 30% 감소', cond:'구역당 1회',
       enabled: !road,
@@ -461,10 +461,10 @@ function getActions(zone){
       eff:'영급 유지', cond:'임도 설치 · 2영급 이상',
       enabled: road && yg>=2 && zone.timberBanTurns<=0,
       run(){ state.gold += 1.5*zone.yeongGeup-2; state.health-=1; log(`[${zone.name}] 🪚 택벌 (자금 +${(1.5*zone.yeongGeup).toFixed(1)})`); } },
-    { key:'resort', name:'휴양림 조성', cost:'자금 -5 · 만족도 +3',
+    { key:'resort', name:'휴양림 조성', cost:'자금 -15 · 만족도 +3',
       eff:'이후 매년 자금 +지역사회만족도', cond:'임도 설치 · 3영급 이상 · 전체 3개 구역 중 1곳만 가능',
       enabled: road && yg>=3 && !zone.resortBuilt && !state.zones.some(z=>z.resortBuilt),
-      run(){ state.gold-=5; state.community+=3; zone.resortBuilt=true; log(`[${zone.name}] ⛺ 휴양림 조성 완료`); } },
+      run(){ state.gold-=15; state.community+=3; zone.resortBuilt=true; log(`[${zone.name}] ⛺ 휴양림 조성 완료`); } },
     { key:'carbon', name:'탄소크레딧 발행', cost:'자금 +5(+건강도 배수) · 건강도 +3 · 만족도 +2',
       eff:'이후 3턴 목재생산 금지 · 개벌 시 초기화', cond:'2영급 산림 · 구역당 1회 · 휴양림 구역 불가',
       enabled: yg===2 && !zone.carbonUsed && !zone.resortBuilt,
