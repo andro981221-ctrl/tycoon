@@ -6,15 +6,15 @@
 <title>100년 경영 산림경영</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#16241B;
     --bg-deep:#0F1913;
     --surface:#EFE7D8;
     --surface-dim:#E3D8C0;
-    --ink:#22301C;
-    --ink-soft:#5A6A52;
+    --ink:#20301C;
+    --ink-soft:#41503A;
     --gold:#C89B3C;
     --gold-deep:#96731F;
     --moss:#6B8F5C;
@@ -23,7 +23,7 @@
     --clay-deep:#8A4230;
     --line:#3E5641;
     --danger:#8B3A2E;
-    --paper-shadow: rgba(22,36,27,0.35);
+    --paper-shadow: rgba(22,36,27,0.4);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -31,206 +31,217 @@
     background:
       radial-gradient(ellipse at top, #1E3324 0%, var(--bg) 55%, var(--bg-deep) 100%);
     min-height:100vh;
-    font-family:'Noto Sans KR', sans-serif;
+    font-family:'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    font-size:16px;
+    line-height:1.5;
     color:var(--surface);
-    padding:28px 16px 60px;
   }
-  .wrap{max-width:960px;margin:0 auto;}
+  .wrap{max-width:920px;margin:0 auto; padding:20px 16px 60px;}
+  button{font-family:inherit;}
 
-  /* ---- Header ---- */
-  header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:24px;
-    flex-wrap:wrap;
-    margin-bottom:22px;
+  /* =========================================================
+     INTRO SCREEN
+  ========================================================= */
+  #introScreen{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
   }
-  .title-block .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    letter-spacing:.18em;
-    color:var(--gold);
-    text-transform:uppercase;
-    margin-bottom:4px;
-  }
-  h1{
-    font-family:'Noto Serif KR', serif;
-    font-weight:900;
-    font-size:clamp(28px,4vw,40px);
-    margin:0 0 4px;
-    letter-spacing:-0.01em;
-  }
-  .title-block p{
-    margin:0;
-    color:#B9C4B0;
-    font-size:14px;
-  }
-
-  .ring-dial{position:relative; width:118px; height:118px; flex:none;}
-  .ring-dial svg{width:100%;height:100%;}
-  .ring-dial .center-label{
-    position:absolute; inset:0;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    font-family:'IBM Plex Mono', monospace;
-  }
-  .ring-dial .yr{font-size:20px; font-weight:600; color:var(--surface);}
-  .ring-dial .turn-lbl{font-size:10px; color:#9FB093; letter-spacing:.08em;}
-
-  /* ---- Resource stamps ---- */
-  .resources{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
-    margin-bottom:22px;
-  }
-  .stamp{
-    background:var(--surface);
-    border-radius:14px;
-    padding:14px 16px;
-    color:var(--ink);
+  .intro-card{
+    max-width:640px; width:100%;
+    background:var(--surface); color:var(--ink);
+    border-radius:22px;
+    padding:38px 34px;
+    box-shadow:0 24px 60px rgba(0,0,0,.45);
     position:relative;
-    box-shadow:0 6px 16px var(--paper-shadow);
-    border:2px solid rgba(0,0,0,0.06);
     overflow:hidden;
   }
-  .stamp::before{
-    content:"";
-    position:absolute; right:-18px; top:-18px;
-    width:70px; height:70px; border-radius:50%;
-    opacity:.15;
+  .intro-card::before{
+    content:"🌲";
+    position:absolute; font-size:180px; opacity:.06;
+    right:-30px; top:-40px; transform:rotate(-8deg);
   }
-  .stamp.gold::before{background:var(--gold);}
-  .stamp.moss::before{background:var(--moss);}
-  .stamp.clay::before{background:var(--clay);}
-  .stamp .lbl{
-    font-size:12px; font-weight:700; color:var(--ink-soft);
-    display:flex; align-items:center; gap:6px; margin-bottom:6px;
+  .intro-eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.2em;
+    color:var(--clay-deep); text-transform:uppercase; font-weight:700; margin-bottom:10px;
   }
-  .stamp .lbl .dot{width:8px;height:8px;border-radius:50%;}
-  .stamp.gold .dot{background:var(--gold-deep);}
-  .stamp.moss .dot{background:var(--moss-deep);}
-  .stamp.clay .dot{background:var(--clay-deep);}
-  .stamp .val{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:26px; font-weight:600;
+  .intro-card h1{
+    font-family:'Noto Serif KR', serif; font-weight:900;
+    font-size:clamp(30px,5vw,42px); margin:0 0 14px; letter-spacing:-0.01em;
   }
-  .stamp .delta{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    margin-left:8px;
-    opacity:0;
-    transition:opacity .2s;
+  .intro-card > p.lead{font-size:15.5px; color:var(--ink-soft); line-height:1.7; margin:0 0 22px;}
+  .rule-list{list-style:none; margin:0 0 28px; padding:0; display:grid; gap:10px;}
+  .rule-list li{
+    display:flex; align-items:flex-start; gap:12px;
+    background:var(--surface-dim); border-radius:12px; padding:12px 14px;
+    font-size:14.5px; line-height:1.5;
   }
-  .stamp .delta.show{opacity:1;}
-  .stamp .delta.pos{color:var(--moss-deep);}
-  .stamp .delta.neg{color:var(--danger);}
+  .rule-list li .ico{font-size:22px; flex:none;}
+  .rule-list li b{display:block; margin-bottom:2px;}
+  .stat-preview{display:flex; gap:10px; margin-bottom:26px; flex-wrap:wrap;}
+  .stat-preview span{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;
+    background:var(--surface-dim); padding:6px 12px; border-radius:20px; color:var(--ink-soft);
+  }
+  #startBtn{
+    width:100%;
+    background:var(--ink); color:var(--surface); border:none;
+    padding:16px; border-radius:14px; font-size:17px; font-weight:900;
+    cursor:pointer; letter-spacing:.02em;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+    transition:transform .1s;
+  }
+  #startBtn:hover{transform:translateY(-2px);}
+  #startBtn:active{transform:translateY(0);}
 
-  /* ---- Zones ---- */
-  .section-title{
-    font-family:'Noto Serif KR', serif;
-    font-weight:700;
-    font-size:15px;
-    color:#CBD6C1;
-    margin:0 0 10px;
-    padding-left:2px;
-    border-left:3px solid var(--gold);
-    padding-left:10px;
+  /* =========================================================
+     GAME SCREEN
+  ========================================================= */
+  #gameScreen{display:none;}
+
+  .hud{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; flex-wrap:wrap; margin-bottom:16px;
+  }
+  .hud-stats{display:flex; gap:8px; flex-wrap:wrap;}
+  .hud-chip{
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    background:rgba(239,231,216,0.1);
+    border:1px solid rgba(239,231,216,0.18);
+    border-radius:14px; padding:8px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    position:relative;
+  }
+  .hud-chip .ico{font-size:20px; line-height:1;}
+  .hud-chip .lbl-text{
+    font-family:'Noto Sans KR','Malgun Gothic',sans-serif;
+    font-size:11px; font-weight:700; color:#B9C4B0; letter-spacing:-0.01em;
+    white-space:nowrap;
+  }
+  .hud-chip .val{font-size:17px; font-weight:700;}
+  .hud-chip .delta{
+    position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+    font-size:12.5px; font-weight:700; opacity:0; transition:opacity .2s, transform .2s;
+    white-space:nowrap;
+  }
+  .hud-chip .delta.show{opacity:1; transform:translateX(-50%) translateY(-2px);}
+  .hud-chip .delta.pos{color:#8FCB7A;}
+  .hud-chip .delta.neg{color:#E08A72;}
+  .hud-chip.gold{border-color:rgba(200,155,60,.5);}
+  .hud-chip.moss{border-color:rgba(107,143,92,.5);}
+  .hud-chip.clay{border-color:rgba(177,92,66,.5);}
+
+  .hud-turn{
+    display:flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#B9C4B0;
+  }
+  .ring-dial{position:relative; width:52px; height:52px; flex:none;}
+  .ring-dial svg{width:100%;height:100%;}
+
+  #checkpointRow{display:flex; gap:4px;}
+  .cp-chip{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
+    padding:1px 5px; border-radius:8px; background:rgba(239,231,216,0.1); color:#7C8A73;
+  }
+  .cp-chip.reached{background:var(--gold); color:#1b2a1f;}
+
+  .game-title-row{
+    display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px;
+    flex-wrap:wrap; gap:6px;
+  }
+  .game-title-row h1{
+    font-family:'Noto Serif KR', serif; font-weight:900; font-size:22px; margin:0;
+  }
+  .game-title-row .year-big{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold); font-weight:700;
+  }
+
+  /* ---- Zone tabs (prominent, top) ---- */
+  .section-label{
+    font-family:'Noto Serif KR', serif; font-weight:700; font-size:14px;
+    color:#CBD6C1; margin:0 0 10px; padding-left:10px; border-left:3px solid var(--gold);
   }
   .zones{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-bottom:22px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:18px;
   }
-  .zone{
-    background:var(--surface);
-    color:var(--ink);
-    border-radius:14px;
-    padding:14px;
-    cursor:pointer;
-    border:2px solid transparent;
-    transition:transform .12s, border-color .12s;
+  .zone-tab{
+    background:var(--surface); color:var(--ink);
+    border-radius:16px; padding:14px 14px 12px; cursor:pointer;
+    border:2.5px solid transparent;
+    transition:transform .12s, border-color .12s, box-shadow .12s;
     box-shadow:0 6px 16px var(--paper-shadow);
+    text-align:left;
   }
-  .zone:hover{transform:translateY(-2px);}
-  .zone.active{border-color:var(--gold-deep);}
-  .zone h3{
-    margin:0 0 8px; font-family:'Noto Serif KR',serif; font-size:16px;
+  .zone-tab:hover{transform:translateY(-3px);}
+  .zone-tab.active{border-color:var(--gold-deep); box-shadow:0 10px 24px rgba(200,155,60,.35);}
+  .zone-tab h3{
+    margin:0 0 8px; font-family:'Noto Serif KR',serif; font-size:16.5px;
     display:flex; justify-content:space-between; align-items:center;
   }
-  .zone .rings{display:flex; gap:2px; margin-bottom:8px;}
-  .zone .ring-seg{
-    width:14px;height:8px;border-radius:2px;
-    background:var(--surface-dim);
-    border:1px solid rgba(0,0,0,.12);
+  .zone-tab h3 .yg-badge{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700;
+    background:var(--moss); color:#fff; padding:2px 8px; border-radius:20px;
   }
-  .zone .ring-seg.on{background:var(--moss);}
-  .zone .tags{display:flex; flex-wrap:wrap; gap:5px;}
+  .zone-tab .rings{display:flex; gap:2px; margin-bottom:9px;}
+  .zone-tab .ring-seg{width:13px;height:7px;border-radius:2px; background:var(--surface-dim); border:1px solid rgba(0,0,0,.12);}
+  .zone-tab .ring-seg.on{background:var(--moss);}
+  .zone-tab .tags{display:flex; flex-wrap:wrap; gap:5px;}
   .tag{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px; padding:2px 7px; border-radius:20px;
-    background:var(--surface-dim); color:var(--ink-soft);
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+    padding:3px 8px; border-radius:20px; background:var(--surface-dim); color:var(--ink-soft);
   }
   .tag.on{background:var(--moss); color:#fff;}
   .tag.used{background:var(--clay); color:#fff;}
   .tag.banned{background:var(--danger); color:#fff;}
+  .zone-tab .hint{
+    font-size:12px; color:var(--ink-soft); margin-top:8px; font-style:italic;
+  }
 
-  /* ---- Ledger / actions ---- */
+  /* ---- Ledger (only shown after zone click) ---- */
+  #ledgerWrap{
+    display:none;
+    animation: slideDown .25s ease;
+  }
+  @keyframes slideDown{ from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
   .ledger{
-    background:var(--surface);
-    color:var(--ink);
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 8px 22px var(--paper-shadow);
-    margin-bottom:22px;
+    background:var(--surface); color:var(--ink);
+    border-radius:18px; padding:18px;
+    box-shadow:0 10px 26px var(--paper-shadow); margin-bottom:20px;
   }
   .ledger-head{
     display:flex; justify-content:space-between; align-items:baseline;
-    margin-bottom:10px;
-    border-bottom:2px solid var(--line);
-    padding-bottom:8px;
+    margin-bottom:12px; border-bottom:2px solid var(--line); padding-bottom:10px;
   }
-  .ledger-head h2{
-    font-family:'Noto Serif KR',serif; font-size:17px; margin:0;
-  }
-  .ledger-head .progress{
-    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);
-  }
-  .actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
-  @media (max-width:640px){ .actions{grid-template-columns:1fr;} .resources,.zones{grid-template-columns:1fr;} }
+  .ledger-head h2{font-family:'Noto Serif KR',serif; font-size:18px; margin:0;}
+  .ledger-head .progress{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; color:var(--ink-soft);}
+  .actions{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:640px){ .actions{grid-template-columns:1fr;} .zones{grid-template-columns:1fr;} }
 
   .action-btn{
-    text-align:left;
-    background:var(--surface-dim);
-    border:1px solid rgba(0,0,0,.08);
-    border-radius:10px;
-    padding:10px 12px;
-    cursor:pointer;
-    font-family:'Noto Sans KR',sans-serif;
-    color:var(--ink);
+    display:flex; align-items:flex-start; gap:12px;
+    text-align:left; background:var(--surface-dim);
+    border:1px solid rgba(0,0,0,.08); border-radius:12px;
+    padding:12px 13px; cursor:pointer; color:var(--ink);
     transition:background .12s, transform .1s;
   }
   .action-btn:hover:not(:disabled){background:#DCCFA0; transform:translateX(2px);}
   .action-btn:disabled{opacity:.4; cursor:not-allowed;}
-  .action-btn .name{font-weight:700; font-size:14px; display:flex; justify-content:space-between;}
-  .action-btn .cost{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft);}
-  .action-btn .eff{font-size:11.5px; color:var(--ink-soft); margin-top:3px; line-height:1.4;}
+  .action-btn .ico{
+    font-size:26px; flex:none; width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.55); border-radius:10px;
+  }
+  .action-btn .body{flex:1; min-width:0;}
+  .action-btn .name{font-weight:800; font-size:15.5px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px;}
+  .action-btn .cost{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); font-weight:600;}
+  .action-btn .eff{font-size:13px; opacity:.85; margin-top:4px; line-height:1.5;}
+  .action-btn .eff .cond{opacity:.7; display:block; margin-top:2px;}
 
   /* ---- Log ---- */
   .log-panel{
-    background:rgba(0,0,0,.22);
-    border-radius:14px;
-    padding:14px 16px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px;
-    color:#B9C4B0;
-    max-height:160px;
-    overflow-y:auto;
+    background:rgba(0,0,0,.3); border-radius:14px; padding:14px 16px;
+    font-family:'IBM Plex Mono', monospace; font-size:14px; line-height:1.7;
+    color:#D3DCC9; max-height:170px; overflow-y:auto;
   }
   .log-panel .entry{padding:3px 0; border-bottom:1px dashed rgba(255,255,255,.08);}
   .log-panel .entry:last-child{border-bottom:none;}
@@ -243,23 +254,30 @@
   }
   .overlay.show{display:flex;}
   .end-card{
-    background:var(--surface); color:var(--ink);
-    max-width:480px; width:100%;
-    border-radius:18px; padding:30px 28px;
-    text-align:center;
+    background:var(--surface); color:var(--ink); max-width:480px; width:100%;
+    border-radius:18px; padding:30px 28px; text-align:center;
     box-shadow:0 20px 50px rgba(0,0,0,.5);
   }
-  .end-card .badge{
-    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em;
-    color:var(--clay-deep); text-transform:uppercase; margin-bottom:8px;
-  }
+  .end-card .badge{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; color:var(--clay-deep); text-transform:uppercase; margin-bottom:8px;}
   .end-card h2{font-family:'Noto Serif KR',serif; font-size:22px; margin:0 0 14px;}
-  .end-card p{font-size:14px; line-height:1.6; color:var(--ink-soft); margin:0 0 20px;}
+  .end-card p{font-size:14.5px; line-height:1.6; color:var(--ink-soft); margin:0 0 20px;}
   .end-card button{
     background:var(--ink); color:var(--surface); border:none;
     padding:11px 22px; border-radius:30px; font-weight:700; cursor:pointer;
-    font-family:'Noto Sans KR',sans-serif;
   }
+  .cp-restart-btn{
+    background:var(--surface-dim) !important; color:var(--ink) !important;
+    border:1.5px solid var(--gold-deep) !important;
+    font-size:13.5px;
+  }
+
+  #eventOverlay{ z-index:60; }
+  .event-block{ margin-bottom:14px; }
+  .event-block:last-child{ margin-bottom:0; }
+  .event-icon{ font-size:52px; line-height:1; margin-bottom:8px; }
+  .event-block h2{ font-family:'Noto Serif KR',serif; font-size:21px; margin:0 0 10px; }
+  .event-block p{ font-size:14.5px; line-height:1.6; color:var(--ink-soft); margin:0; }
+  .event-block hr{ border:none; border-top:1px dashed rgba(0,0,0,.15); margin:16px 0; }
 
   footer{
     text-align:center; font-size:11px; color:#7C8A73;
@@ -269,52 +287,95 @@
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <div class="title-block">
-      <div class="eyebrow">FOREST MANAGEMENT LEDGER — 초안(DRAFT)</div>
-      <h1>100년 경영 산림경영</h1>
-      <p>30ha의 산을 물려받은 당신. 10턴(100년) 동안 자금·산림건강도·지역사회만족도의 균형을 지켜내야 합니다.</p>
+<!-- ============== INTRO SCREEN ============== -->
+<div id="introScreen">
+  <div class="intro-card">
+    <div class="intro-eyebrow">Forest Management Ledger · 초안</div>
+    <h1>100년 경영 산림경영</h1>
+    <p class="lead">평범한 직장인이던 당신은 부모님으로부터 300ha 규모의 산을 상속받았습니다.
+    이제 산주가 되어 10턴(100년) 동안 산림을 경영하며, 경제성과 환경성, 지역사회와의 관계를 모두 지켜내야 합니다.</p>
+
+    <ul class="rule-list">
+      <li><span class="ico">🗺️</span><div><b>3개 구역 경영</b>300ha의 산을 3개 구역으로 나누어 경영합니다.</div></li>
+      <li><span class="ico">⏳</span><div><b>10턴 = 100년</b>한 턴마다 10번의 선택(=10년)을 하고, 총 10턴이 지나면 경영이 마무리됩니다.</div></li>
+      <li><span class="ico">⚖️</span><div><b>균형이 핵심</b>자금만 좇으면 숲이 죽고, 숲만 지키면 파산합니다. 세 지표를 함께 관리하세요.</div></li>
+      <li><span class="ico">🔥</span><div><b>돌발 변수</b>산불과 지역 축제 같은 예측 못한 사건이 경영에 영향을 줍니다.</div></li>
+    </ul>
+
+    <div class="stat-preview">
+      <span>💰 자금 10</span>
+      <span>🌲 산림건강도 5</span>
+      <span>🤝 지역사회만족도 3</span>
     </div>
-    <div class="ring-dial">
-      <svg viewBox="0 0 118 118" id="ringSvg"></svg>
-      <div class="center-label">
-        <div class="yr" id="yearLabel">1년</div>
-        <div class="turn-lbl" id="turnLabel">1 / 10 턴</div>
+
+    <button id="startBtn" onclick="startGame()">경영 시작하기</button>
+  </div>
+</div>
+
+<!-- ============== GAME SCREEN ============== -->
+<div id="gameScreen">
+  <div class="wrap">
+
+    <div class="hud">
+      <div class="hud-stats">
+        <div class="hud-chip gold">
+          <span class="delta" id="deltaGold">+0</span>
+          <span class="ico">💰</span>
+          <span class="lbl-text">자금</span>
+          <span class="val" id="valGold">10.0</span>
+        </div>
+        <div class="hud-chip moss">
+          <span class="delta" id="deltaHealth">+0</span>
+          <span class="ico">🌲</span>
+          <span class="lbl-text">산림건강도</span>
+          <span class="val" id="valHealth">5.0</span>
+        </div>
+        <div class="hud-chip clay">
+          <span class="delta" id="deltaCommunity">+0</span>
+          <span class="ico">🤝</span>
+          <span class="lbl-text">지역사회만족도</span>
+          <span class="val" id="valCommunity">3.0</span>
+        </div>
+      </div>
+      <div class="hud-turn">
+        <div class="ring-dial"><svg viewBox="0 0 52 52" id="ringSvg"></svg></div>
+        <div>
+          <div id="yearLabel" style="font-weight:700;color:var(--surface)">1년</div>
+          <div id="turnLabel">1 / 10 턴</div>
+          <div id="checkpointRow" style="margin-top:2px;"></div>
+        </div>
       </div>
     </div>
-  </header>
 
-  <div class="resources">
-    <div class="stamp gold">
-      <div class="lbl"><span class="dot"></span>자금 <span class="delta" id="deltaGold">+0</span></div>
-      <div class="val" id="valGold">10</div>
+    <div class="game-title-row">
+      <h1>🌲 산림 경영 대장</h1>
     </div>
-    <div class="stamp moss">
-      <div class="lbl"><span class="dot"></span>산림 건강도 <span class="delta" id="deltaHealth">+0</span></div>
-      <div class="val" id="valHealth">5</div>
+
+    <div class="section-label">구역 선택 · 경영할 구역을 클릭하세요</div>
+    <div class="zones" id="zonesEl"></div>
+
+    <div id="ledgerWrap">
+      <div class="ledger">
+        <div class="ledger-head">
+          <h2 id="ledgerZoneName">1구역 장부</h2>
+          <div class="progress" id="choiceProgress">이번 턴 0 / 10년 경과</div>
+        </div>
+        <div class="actions" id="actionsEl"></div>
+      </div>
     </div>
-    <div class="stamp clay">
-      <div class="lbl"><span class="dot"></span>지역사회 만족도 <span class="delta" id="deltaCommunity">+0</span></div>
-      <div class="val" id="valCommunity">5</div>
-    </div>
+
+    <div class="section-label">경영 일지</div>
+    <div class="log-panel" id="logEl"></div>
+
+    <footer>산림교육전문가 자격관리 콘텐츠 개발 프로젝트 · 게임 개발 기획안 기반 플레이 가능 초안 · 실제 수치·확률은 자문회의 후 조정 예정</footer>
   </div>
+</div>
 
-  <div class="section-title">구역 선택 · 클릭해서 경영할 구역을 고르세요</div>
-  <div class="zones" id="zonesEl"></div>
-
-  <div class="ledger">
-    <div class="ledger-head">
-      <h2 id="ledgerZoneName">1구역 장부</h2>
-      <div class="progress" id="choiceProgress">이번 턴 0 / 10년 경과</div>
-    </div>
-    <div class="actions" id="actionsEl"></div>
+<div class="overlay" id="eventOverlay">
+  <div class="end-card" id="eventCard">
+    <div id="eventOverlayBody"></div>
+    <button onclick="closeEventModal()">확인</button>
   </div>
-
-  <div class="section-title">경영 일지</div>
-  <div class="log-panel" id="logEl"></div>
-
-  <footer>산림교육전문가 자격관리 콘텐츠 개발 프로젝트 · 게임 개발 기획안 기반 플레이 가능 초안 · 실제 수치·확률은 자문회의 후 조정 예정</footer>
 </div>
 
 <div class="overlay" id="overlay">
@@ -322,47 +383,46 @@
     <div class="badge" id="endBadge">ENDING</div>
     <h2 id="endTitle">엔딩</h2>
     <p id="endText"></p>
-    <button onclick="restart()">다시 경영하기</button>
+    <div id="checkpointBtns" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+    <button onclick="restart()">처음부터 다시 경영하기</button>
   </div>
 </div>
 
 <script>
 /* =========================================================
-   100년 경영 산림경영 — 플레이 가능 초안
-   기획안(hwp) 기반 구현. 명시되지 않은 값(시작 건강도/만족도,
-   이벤트 발생 타이밍 등)은 합리적으로 가정했으며 코드 내
-   ASSUMPTION 주석으로 표시함. 자문회의 후 튜닝 필요.
+   100년 경영 산림경영 — 플레이 가능 초안 (v2, 게임형 UI)
+   기획안(hwp) 기반 구현. 명시되지 않은 값은 ASSUMPTION 주석으로 표시.
 ========================================================= */
 
 const MAX_TURNS = 10;
 const ACTIONS_PER_TURN = 10;
 
-// ASSUMPTION: 시작 산림건강도/지역사회만족도는 기획안에 명시되지 않아 5로 가정
+const ICONS = {
+  plant:'🌱', road:'🛤️', tend:'🌳', gather:'🍄',
+  clearcut:'🪓', selective:'🪚', resort:'⛺', carbon:'♻️', wait:'💤'
+};
+
 let state;
+let checkpoints = {};
+let pendingEvents = [];
+const CHECKPOINT_TURNS = [3,6,10];
 
 function freshState(){
   return {
     turn: 1,
     choicesThisTurn: 0,
+    totalYears: 0,
     gold: 10,
     health: 5,
-    community: 5,
-    activeZone: 0,
+    community: 3,
+    activeZone: null,
     zones: [0,1,2].map(i => ({
-      id:i,
-      name:`${i+1}구역`,
-      yeongGeup:0,
-      roadBuilt:false,
-      forestryUsed:false,     // 숲가꾸기 구역당 1회
-      resortBuilt:false,      // 휴양림 구역당 1회
-      carbonUsed:false,       // 탄소크레딧 구역당 1회
-      fireResistStacks:0,     // 숲가꾸기 누적 산불확률 감소
-      timberBanTurns:0,       // 탄소크레딧 이후 3턴 목재생산 금지
-      lastHarvestKind:null,   // 자원 채취 턴 카운트(임산물 2턴당1회)
-      lastGatherTurn:-99
+      id:i, name:`${i+1}구역`,
+      yeongGeup:0, roadBuilt:false,
+      resortBuilt:false, carbonUsed:false, plantUsed:false,
+      fireResistStacks:0, timberBanTurns:0, lastGatherYear:-99, lastTendYear:-99
     })),
-    log: [],
-    ended:false
+    log: [], ended:false
   };
 }
 
@@ -371,147 +431,115 @@ function log(msg, isEvent=false){
   if(state.log.length>60) state.log.pop();
   renderLog();
 }
-
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 
-/* ---------------- Actions definition ---------------- */
 function getActions(zone){
   const road = zone.roadBuilt;
   const yg = zone.yeongGeup;
   return [
-    {
-      key:'plant', name:'조림', cost:'자금 -2 · 건강도 +2 · 만족도 +1',
-      eff:'2턴 후 개벌·택벌 가능',
-      enabled: yg===0,
-      cond:'0영급 상태에서만 가능',
-      run(){
-        state.gold-=2; state.health+=2; state.community+=1;
-        zone.yeongGeup = 0; // 조림 시작점
-        log(`[${zone.name}] 조림 완료`);
-      }
-    },
-    {
-      key:'road', name:'임도 설치', cost:'자금 -1 · 건강도 -1',
-      eff:'미설치 시 목재 생산 불가 · 산불 피해 30% 감소',
+    { key:'plant', name:'조림', cost:'자금 -2 · 건강도 +2 · 만족도 +1',
+      eff:'2턴 후 개벌·택벌 가능', cond:'0영급 상태에서 구역당 1회만 가능',
+      enabled: yg===0 && !zone.plantUsed,
+      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.yeongGeup=0; zone.plantUsed=true; log(`[${zone.name}] 🌱 조림 완료`); } },
+    { key:'road', name:'임도 설치', cost:'자금 -1 · 건강도 -1',
+      eff:'미설치 시 목재 생산 불가 · 산불 피해 30% 감소', cond:'구역당 1회',
       enabled: !road,
-      cond:'구역당 1회',
-      run(){
-        state.gold-=1; state.health-=1; zone.roadBuilt=true;
-        log(`[${zone.name}] 임도 설치 완료`);
-      }
-    },
-    {
-      key:'tend', name:'숲가꾸기', cost:'자금 -1 · 건강도 +1 · 만족도 +1',
-      eff:'산불 발생 확률 10%p 감소(누적)',
-      enabled: road && yg>=1 && !zone.forestryUsed,
-      cond:'임도 설치 · 1영급 이상 · 구역당 1회',
-      run(){
-        state.gold-=1; state.health+=1; state.community+=1;
-        zone.forestryUsed=true; zone.fireResistStacks+=1;
-        log(`[${zone.name}] 숲가꾸기 완료`);
-      }
-    },
-    {
-      key:'gather', name:'임산물 생산', cost:'자금 -0.5 → +2',
-      eff:'2턴당 1회 가능',
-      enabled: (state.turn - zone.lastGatherTurn) >= 2,
-      cond:'2턴당 1회',
-      run(){
-        state.gold += -0.5+2;
-        zone.lastGatherTurn = state.turn;
-        log(`[${zone.name}] 임산물 생산 (+1.5 자금)`);
-      }
-    },
-    {
-      key:'clearcut', name:'목재 생산 · 개벌', cost:`자금 +${(3*yg).toFixed(1)} · 건강도 -4 · 만족도 -2`,
-      eff:'영급 0으로 초기화',
+      run(){ state.gold-=1; state.health-=1; zone.roadBuilt=true; log(`[${zone.name}] 🛤️ 임도 설치 완료`); } },
+    { key:'tend', name:'숲가꾸기', cost:'자금 -1 · 건강도 +1 · 만족도 +1',
+      eff:'산불 발생 확률 3%p 감소(누적)', cond:'임도 설치 · 1영급 이상 · 5년당 1회',
+      enabled: road && yg>=1 && (state.totalYears - zone.lastTendYear) >= 5,
+      run(){ state.gold-=1; state.health+=1; state.community+=1; zone.lastTendYear=state.totalYears; zone.fireResistStacks+=1; log(`[${zone.name}] 🌳 숲가꾸기 완료`); } },
+    { key:'gather', name:'임산물 생산', cost:'자금 -0.5 → +2',
+      eff:'2년당 1회 가능', cond:'2년당 1회',
+      enabled: (state.totalYears - zone.lastGatherYear) >= 2,
+      run(){ state.gold += -0.5+2; zone.lastGatherYear=state.totalYears; log(`[${zone.name}] 🍄 임산물 생산 (+1.5 자금)`); } },
+    { key:'clearcut', name:'목재 생산 · 개벌', cost:`자금 +${(3*yg).toFixed(1)} · 건강도 -4 · 만족도 -2`,
+      eff:'영급 0으로 초기화', cond:'임도 설치 · 2영급 이상',
       enabled: road && yg>=2 && zone.timberBanTurns<=0,
-      cond:'임도 설치 · 2영급 이상',
-      run(){
-        state.gold += 3*zone.yeongGeup - 1; state.health-=4; state.community-=2;
-        log(`[${zone.name}] 개벌 (자금 +${(3*zone.yeongGeup).toFixed(1)})`);
-        zone.yeongGeup=0; zone.carbonUsed=false; zone.timberBanTurns=0;
-      }
-    },
-    {
-      key:'selective', name:'목재 생산 · 택벌', cost:`자금 +${(1.5*yg-2).toFixed(1)} · 건강도 -1`,
-      eff:'영급 유지',
+      run(){ state.gold += 3*zone.yeongGeup-1; state.health-=4; state.community-=2; log(`[${zone.name}] 🪓 개벌 (자금 +${(3*zone.yeongGeup).toFixed(1)})`); zone.yeongGeup=0; zone.carbonUsed=false; zone.timberBanTurns=0; } },
+    { key:'selective', name:'목재 생산 · 택벌', cost:`자금 +${(1.5*yg-2).toFixed(1)} · 건강도 -1`,
+      eff:'영급 유지', cond:'임도 설치 · 2영급 이상',
       enabled: road && yg>=2 && zone.timberBanTurns<=0,
-      cond:'임도 설치 · 2영급 이상',
-      run(){
-        state.gold += 1.5*zone.yeongGeup - 2; state.health-=1;
-        log(`[${zone.name}] 택벌 (자금 +${(1.5*zone.yeongGeup).toFixed(1)})`);
-      }
-    },
-    {
-      key:'resort', name:'휴양림 조성', cost:'자금 -5 · 만족도 +3',
-      eff:'이후 매년 자금 +지역사회만족도',
-      enabled: road && yg>=1 && !zone.resortBuilt,
-      cond:'임도 설치 · 1영급 이상 · 구역당 1회',
-      run(){
-        state.gold-=5; state.community+=3; zone.resortBuilt=true;
-        log(`[${zone.name}] 휴양림 조성 완료`);
-      }
-    },
-    {
-      key:'carbon', name:'탄소크레딧 발행', cost:'자금 +5(+건강도 배수) · 건강도 +3 · 만족도 +2',
-      eff:'이후 3턴 목재생산 금지 · 개벌 시 초기화',
-      enabled: yg===2 && !zone.carbonUsed,
-      cond:'2영급 산림 · 구역당 1회',
-      run(){
-        const bonus = 5*state.health;
-        state.gold += 5+bonus; state.health+=3; state.community+=2;
-        zone.carbonUsed=true; zone.timberBanTurns=3;
-        log(`[${zone.name}] 탄소크레딧 발행 (자금 +${(5+bonus).toFixed(1)})`, true);
-      }
-    },
-    {
-      key:'wait', name:'아무것도 하지 않기', cost:'건강도 +0.3',
-      eff:'-',
-      enabled:true, cond:'-',
-      run(){ state.health+=0.3; log(`[${zone.name}] 관망`); }
-    }
+      run(){ state.gold += 1.5*zone.yeongGeup-2; state.health-=1; log(`[${zone.name}] 🪚 택벌 (자금 +${(1.5*zone.yeongGeup).toFixed(1)})`); } },
+    { key:'resort', name:'휴양림 조성', cost:'자금 -5 · 만족도 +3',
+      eff:'이후 매년 자금 +지역사회만족도', cond:'임도 설치 · 3영급 이상 · 전체 3개 구역 중 1곳만 가능',
+      enabled: road && yg>=3 && !zone.resortBuilt && !state.zones.some(z=>z.resortBuilt),
+      run(){ state.gold-=5; state.community+=3; zone.resortBuilt=true; log(`[${zone.name}] ⛺ 휴양림 조성 완료`); } },
+    { key:'carbon', name:'탄소크레딧 발행', cost:'자금 +5(+건강도 배수) · 건강도 +3 · 만족도 +2',
+      eff:'이후 3턴 목재생산 금지 · 개벌 시 초기화', cond:'2영급 산림 · 구역당 1회 · 휴양림 구역 불가',
+      enabled: yg===2 && !zone.carbonUsed && !zone.resortBuilt,
+      run(){ const bonus=5*state.health; state.gold+=5+bonus; state.health+=3; state.community+=2; zone.carbonUsed=true; zone.timberBanTurns=3; log(`[${zone.name}] ♻️ 탄소크레딧 발행 (자금 +${(5+bonus).toFixed(1)})`, true); } },
+    { key:'wait', name:'아무것도 하지 않기', cost:'건강도 +0.3', eff:'-', cond:'-',
+      enabled:true,
+      run(){ state.health+=0.3; log(`[${zone.name}] 💤 관망`); } }
   ];
 }
 
-/* ---------------- Turn progression & events ---------------- */
 function endOfTurnRoutine(){
-  // 휴양림 고정 자금 수익 (구역당)
-  state.zones.forEach(z=>{
-    if(z.resortBuilt){
-      state.gold += Math.max(0,state.community);
+  state.zones.forEach(z=>{ if(z.resortBuilt) state.gold += Math.max(0,state.community); });
+
+  if(state.turn % 3 === 0){
+    const baseFireChance = 0.75;
+    const totalTend = state.zones.reduce((s,z)=>s+z.fireResistStacks,0);
+    const fireChance = clamp(baseFireChance - Math.min(totalTend,5)*0.03, 0.03, 1);
+    if(Math.random() < fireChance){
+      const anyRoad = state.zones.some(z=>z.roadBuilt);
+      const dmgMul = anyRoad ? 0.7 : 1;
+      state.gold -= 20*dmgMul; state.health -= 8*dmgMul; state.community -= 8*dmgMul;
+      const msg = `자금 -${(20*dmgMul).toFixed(1)} · 건강도 -${(8*dmgMul).toFixed(1)} · 만족도 -${(8*dmgMul).toFixed(1)}`;
+      log(`🔥 산불 발생! ${msg}`, true);
+      pendingEvents.push({icon:'🔥', title:'산불 발생', text:msg});
+    } else {
+      log(`☁️ ${state.turn}턴 종료 — 산불 확률 ${(fireChance*100).toFixed(0)}%(3턴마다 판정)였지만 발생하지 않음`);
     }
-  });
-
-  // 산불 이벤트: 기본 1/3 확률, 임도설치 없으면 피해 100%, 있으면 70%
-  // 숲가꾸기 스택만큼 확률 10%p씩 감소(최대 50%p)
-  const baseFireChance = 0.33;
-  const totalTend = state.zones.reduce((s,z)=>s+z.fireResistStacks,0);
-  const fireChance = clamp(baseFireChance - Math.min(totalTend,5)*0.1, 0.03, 1);
-  if(Math.random() < fireChance){
-    const anyRoad = state.zones.some(z=>z.roadBuilt);
-    const dmgMul = anyRoad ? 0.7 : 1;
-    state.gold -= 10*dmgMul; state.health -= 5*dmgMul; state.community -= 5*dmgMul;
-    log(`🔥 산불 발생! 자금 -${(10*dmgMul).toFixed(1)} · 건강도 -${(5*dmgMul).toFixed(1)} · 만족도 -${(5*dmgMul).toFixed(1)}`, true);
+  } else {
+    log(`🌤️ ${state.turn}턴 종료 — 산불은 3턴마다만 판정됨 (다음 판정까지 대기)`);
   }
 
-  // 지역 축제: 만족도 5점당 확률 1.5배, 기본 20%
   const festMul = Math.pow(1.5, Math.floor(Math.max(0,state.community)/5));
-  const festChance = clamp(0.2*festMul, 0, 0.9);
-  if(state.zones.some(z=>z.resortBuilt) && Math.random() < festChance){
-    const bonus = state.zones.filter(z=>z.resortBuilt).length * Math.max(0,state.community)*0.5;
-    state.gold += bonus;
-    log(`🎉 지역 축제 발생! 휴양림 수익 +${bonus.toFixed(1)}`, true);
+  const festChance = clamp(0.35*festMul, 0, 0.9);
+  const hasResort = state.zones.some(z=>z.resortBuilt);
+  if(hasResort){
+    if(Math.random() < festChance){
+      const bonus = state.zones.filter(z=>z.resortBuilt).length * Math.max(0,state.community)*0.5;
+      state.gold += bonus;
+      const msg = `휴양림 수익 +${bonus.toFixed(1)}`;
+      log(`🎉 지역 축제 발생! ${msg}`, true);
+      pendingEvents.push({icon:'🎉', title:'지역 축제 발생', text:msg});
+    } else {
+      log(`🏕️ 지역 축제 확률 ${(festChance*100).toFixed(0)}%였지만 발생하지 않음`);
+    }
   }
 
-  // 영급 증가 & 타이머 감소
-  state.zones.forEach(z=>{
-    z.yeongGeup += 1;
-    if(z.timberBanTurns>0) z.timberBanTurns -=1;
-  });
-
+  state.zones.forEach(z=>{ z.yeongGeup+=1; if(z.timberBanTurns>0) z.timberBanTurns-=1; });
   state.turn += 1;
   state.choicesThisTurn = 0;
+
+  const justCompleted = state.turn - 1;
+  if(CHECKPOINT_TURNS.includes(justCompleted)){
+    saveCheckpoint(justCompleted);
+  }
+}
+
+function showEventModal(events){
+  const body = document.getElementById('eventOverlayBody');
+  body.innerHTML = events.map((e,i)=>`
+    <div class="event-block">
+      ${i>0?'<hr>':''}
+      <div class="event-icon">${e.icon}</div>
+      <h2>${e.title}</h2>
+      <p>${e.text}</p>
+    </div>`).join('');
+  document.getElementById('eventOverlay').classList.add('show');
+}
+
+function closeEventModal(){
+  document.getElementById('eventOverlay').classList.remove('show');
+}
+
+function saveCheckpoint(turnNum){
+  checkpoints[turnNum] = JSON.parse(JSON.stringify(state));
+  log(`💾 ${turnNum}턴 세이브포인트 저장됨`, true);
 }
 
 function checkEndings(){
@@ -520,10 +548,10 @@ function checkEndings(){
   if(state.community <= 0){ showEnd('실패','[지역 갈등] 주민들의 외면','지역사회와의 소통 없이 일방적인 경영을 이어갔습니다. 숲은 소통이 끊긴 고립된 섬이 되었습니다.'); return true; }
   if(state.turn > MAX_TURNS){
     const g=state.gold, h=state.health, c=state.community;
-    if(g>=30 && h>=10 && c>=10) showEnd('BEST','숲과 함께 푸른 미래를 만드는 산주','축하합니다! 경제적 수익, 환경 보전, 지역사회 상생이라는 세 마리 토끼를 모두 잡았습니다.');
-    else if(g>=30 && h>=3 && c>=3) showEnd('경영 특화','알짜배기 임업 기업가','탁월한 비즈니스 감각으로 산림을 통해 상당한 부를 축적했습니다! 다만 생태적 깊이나 지역 친밀함은 아쉬움으로 남습니다.');
-    else if(h>=10 && g>=3 && c>=3) showEnd('환경 특화','울창한 숲의 수호자','숲은 동식물이 숨 쉬는 청정 생태계로 거듭났습니다! 통장 잔고는 넉넉지 않지만 마음만은 풍요롭습니다.');
-    else if(c>=10 && g>=3 && h>=3) showEnd('사회 특화','마을의 든든한 숲 보물섬','숲을 활용해 마을에 활력을 불어넣었습니다! 주민들은 당신을 든든한 이웃이라 부릅니다.');
+    if(g>=500 && h>=20 && c>=30) showEnd('BEST','숲과 함께 푸른 미래를 만드는 산주','축하합니다! 경제적 수익, 환경 보전, 지역사회 상생이라는 세 마리 토끼를 모두 잡았습니다.');
+    else if(g>=300 && h>=5 && c>=5) showEnd('경영 특화','알짜배기 임업 기업가','탁월한 비즈니스 감각으로 산림을 통해 상당한 부를 축적했습니다! 다만 생태적 깊이나 지역 친밀함은 아쉬움으로 남습니다.');
+    else if(h>=15 && g>=5 && c>=5) showEnd('환경 특화','울창한 숲의 수호자','숲은 동식물이 숨 쉬는 청정 생태계로 거듭났습니다! 통장 잔고는 넉넉지 않지만 마음만은 풍요롭습니다.');
+    else if(c>=15 && g>=5 && h>=5) showEnd('사회 특화','마을의 든든한 숲 보물섬','숲을 활용해 마을에 활력을 불어넣었습니다! 주민들은 당신을 든든한 이웃이라 부릅니다.');
     else showEnd('보통','평범한 숲의 관리자','100년 동안 숲을 유지하며 무사히 임기를 마쳤습니다. 다음번엔 확실한 전략을 세워보는 건 어떨까요?');
     return true;
   }
@@ -535,10 +563,25 @@ function showEnd(badge,title,text){
   document.getElementById('endBadge').textContent = badge;
   document.getElementById('endTitle').textContent = title;
   document.getElementById('endText').textContent = text;
+
+  const cpBtnEl = document.getElementById('checkpointBtns');
+  const available = CHECKPOINT_TURNS.filter(t=>checkpoints[t]);
+  cpBtnEl.innerHTML = available.length
+    ? `<div style="font-size:12px;color:var(--ink-soft);margin-bottom:2px;">세이브포인트에서 다시 시작</div>` +
+      available.map(t=>`<button class="cp-restart-btn" onclick="loadCheckpoint(${t})">💾 ${t}턴 지점으로</button>`).join('')
+    : '';
+
   document.getElementById('overlay').classList.add('show');
 }
 
-/* ---------------- Rendering ---------------- */
+function loadCheckpoint(turnNum){
+  state = JSON.parse(JSON.stringify(checkpoints[turnNum]));
+  pendingEvents = [];
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('eventOverlay').classList.remove('show');
+  render();
+}
+
 function flashDelta(id, before, after){
   const el = document.getElementById(id);
   const d = after-before;
@@ -551,16 +594,16 @@ function flashDelta(id, before, after){
 function renderRingDial(){
   const svg = document.getElementById('ringSvg');
   svg.innerHTML='';
-  const cx=59, cy=59;
+  const cx=26, cy=26;
   for(let i=0;i<MAX_TURNS;i++){
-    const r = 12 + i*4.6;
+    const r = 4 + i*2.1;
     const filled = i < (state.turn-1);
     const current = i === (state.turn-1);
     const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
     circle.setAttribute('cx',cx); circle.setAttribute('cy',cy); circle.setAttribute('r',r);
     circle.setAttribute('fill','none');
     circle.setAttribute('stroke', filled? '#C89B3C' : (current? '#EFE7D8' : 'rgba(239,231,216,0.18)'));
-    circle.setAttribute('stroke-width', current? 2.4 : 1.4);
+    circle.setAttribute('stroke-width', current? 1.6 : 1);
     svg.appendChild(circle);
   }
   document.getElementById('yearLabel').textContent = `${(state.turn-1)*10+1}년`;
@@ -583,26 +626,31 @@ function renderZones(){
   el.innerHTML='';
   state.zones.forEach(z=>{
     const div = document.createElement('div');
-    div.className = 'zone' + (z.id===state.activeZone?' active':'');
+    div.className = 'zone-tab' + (z.id===state.activeZone?' active':'');
     div.onclick = ()=>{ state.activeZone=z.id; render(); };
     const rings = Array.from({length:8},(_,i)=>`<div class="ring-seg ${i<z.yeongGeup?'on':''}"></div>`).join('');
+    const tendCooldown = Math.max(0, 5-(state.totalYears - z.lastTendYear));
     div.innerHTML = `
-      <h3>${z.name} <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft)">영급 ${z.yeongGeup}</span></h3>
+      <h3>${z.name} <span class="yg-badge">영급 ${z.yeongGeup}</span></h3>
       <div class="rings">${rings}</div>
       <div class="tags">
-        <span class="tag ${z.roadBuilt?'on':''}">임도${z.roadBuilt?'✓':''}</span>
-        <span class="tag ${z.forestryUsed?'used':''}">숲가꾸기${z.forestryUsed?'✓':''}</span>
-        <span class="tag ${z.resortBuilt?'used':''}">휴양림${z.resortBuilt?'✓':''}</span>
-        <span class="tag ${z.carbonUsed?'used':''}">탄소크레딧${z.carbonUsed?'✓':''}</span>
-        ${z.timberBanTurns>0?`<span class="tag banned">목재생산금지 ${z.timberBanTurns}턴</span>`:''}
-      </div>`;
+        <span class="tag ${z.roadBuilt?'on':''}">🛤️ 임도${z.roadBuilt?'✓':''}</span>
+        <span class="tag ${tendCooldown>0?'banned':''}">🌳 숲가꾸기${tendCooldown>0?` (${tendCooldown}년 대기)`:''}</span>
+        <span class="tag ${z.resortBuilt?'used':''}">⛺ 휴양림${z.resortBuilt?'✓':''}</span>
+        <span class="tag ${z.carbonUsed?'used':''}">♻️ 탄소크레딧${z.carbonUsed?'✓':''}</span>
+        ${z.timberBanTurns>0?`<span class="tag banned">⛔ 벌채금지 ${z.timberBanTurns}턴</span>`:''}
+      </div>
+      <div class="hint">${z.id===state.activeZone ? '📖 장부 펼침' : '👆 눌러서 장부 열기'}</div>`;
     el.appendChild(div);
   });
 }
 
 function renderActions(){
+  const ledgerWrap = document.getElementById('ledgerWrap');
+  if(state.activeZone===null){ ledgerWrap.style.display='none'; return; }
+  ledgerWrap.style.display='block';
   const zone = state.zones[state.activeZone];
-  document.getElementById('ledgerZoneName').textContent = `${zone.name} 장부`;
+  document.getElementById('ledgerZoneName').textContent = `📖 ${zone.name} 장부`;
   document.getElementById('choiceProgress').textContent = `이번 턴 ${state.choicesThisTurn} / ${ACTIONS_PER_TURN}년 경과`;
   const el = document.getElementById('actionsEl');
   el.innerHTML='';
@@ -610,8 +658,12 @@ function renderActions(){
     const btn = document.createElement('button');
     btn.className='action-btn';
     btn.disabled = !a.enabled || state.ended;
-    btn.innerHTML = `<div class="name">${a.name}<span class="cost">${a.cost}</span></div>
-      <div class="eff">${a.eff} <br><span style="opacity:.7">조건: ${a.cond}</span></div>`;
+    btn.innerHTML = `
+      <div class="ico">${ICONS[a.key]}</div>
+      <div class="body">
+        <div class="name">${a.name}<span class="cost">${a.cost}</span></div>
+        <div class="eff">${a.eff}<span class="cond">조건: ${a.cond}</span></div>
+      </div>`;
     btn.onclick = ()=>doAction(a);
     el.appendChild(btn);
   });
@@ -622,36 +674,55 @@ function renderLog(){
   el.innerHTML = state.log.map(e=>`<div class="entry ${e.isEvent?'event':''}">${e.msg}</div>`).join('');
 }
 
+function renderCheckpointRow(){
+  const el = document.getElementById('checkpointRow');
+  el.innerHTML = CHECKPOINT_TURNS.map(t=>{
+    const reached = !!checkpoints[t];
+    return `<span class="cp-chip ${reached?'reached':''}">💾${t}</span>`;
+  }).join('');
+}
+
 function render(prev){
   renderRingDial();
   renderResources(prev);
   renderZones();
   renderActions();
+  renderCheckpointRow();
 }
 
-/* ---------------- Action execution ---------------- */
 function doAction(action){
   if(state.ended) return;
   const prev = {gold:state.gold, health:state.health, community:state.community};
   action.run();
   state.choicesThisTurn += 1;
-
+  state.totalYears += 1;
   if(checkEndings()){ render(prev); return; }
-
   if(state.choicesThisTurn >= ACTIONS_PER_TURN){
+    pendingEvents = [];
     endOfTurnRoutine();
     if(checkEndings()){ render(prev); return; }
+    if(pendingEvents.length){ showEventModal(pendingEvents); }
   }
   render(prev);
 }
 
-function restart(){
-  state = freshState();
-  document.getElementById('overlay').classList.remove('show');
+function startGame(){
+  document.getElementById('introScreen').style.display='none';
+  document.getElementById('gameScreen').style.display='block';
   render();
 }
 
-restart();
+function restart(){
+  state = freshState();
+  checkpoints = {};
+  pendingEvents = [];
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('eventOverlay').classList.remove('show');
+  document.getElementById('introScreen').style.display='flex';
+  document.getElementById('gameScreen').style.display='none';
+}
+
+state = freshState();
 </script>
 </body>
 </html>
