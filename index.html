@@ -71,21 +71,43 @@
   ========================================================= */
   #comicScreen{
     display:none;
-    min-height:100vh; align-items:center; justify-content:center; padding:24px;
+    min-height:100vh; align-items:center; justify-content:center; padding:16px;
   }
   .comic-card{
-    max-width:640px; width:100%;
+    max-width:760px; width:100%;
     background:var(--surface); color:var(--ink);
-    border-radius:22px; padding:30px 26px;
+    border-radius:22px;
     box-shadow:0 24px 60px rgba(0,0,0,.45);
+    overflow:hidden;
   }
+  .comic-card .inner{ padding:22px 22px 26px; }
   .comic-card h2{
     font-family:'Noto Serif KR', serif; font-weight:900; font-size:22px;
-    text-align:center; margin:0 0 20px;
+    text-align:center; margin:0 0 16px;
   }
   .comic-img{
-    width:100%; border-radius:12px; margin-bottom:22px; display:block;
-    border:3px solid var(--ink);
+    width:100%; display:block; margin:0;
+  }
+  .comic-viewer{
+    width:100%; aspect-ratio:1024/765;
+    background-image:url('asset/comic.png');
+    background-repeat:no-repeat;
+    background-size:200% 200%;
+    background-position:0% 0%;
+    cursor:pointer;
+  }
+  .comic-nav{
+    display:flex; align-items:center; justify-content:space-between; margin-top:6px;
+  }
+  .comic-dots{ display:flex; gap:7px; }
+  .comic-dots span{
+    width:9px; height:9px; border-radius:50%; background:var(--surface-dim);
+    border:1.5px solid rgba(0,0,0,.15);
+  }
+  .comic-dots span.on{ background:var(--gold-deep); border-color:var(--gold-deep); }
+  #comicNextBtn{
+    background:var(--ink); color:var(--surface); border:none;
+    padding:11px 26px; border-radius:12px; font-weight:800; cursor:pointer; font-size:14.5px;
   }
   .comic-grid{
     display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px;
@@ -418,32 +440,35 @@
 <!-- ============== COMIC (4-PANEL STORY) SCREEN ============== -->
 <div id="comicScreen">
   <div class="comic-card">
-    <h2>당신의 이야기</h2>
-    <img src="asset/comic.png" alt="4컷 만화" class="comic-img"
-      onerror="this.style.display='none'; document.getElementById('comicFallback').style.display='grid';">
-    <div class="comic-grid" id="comicFallback" style="display:none;">
-      <div class="comic-panel">
-        <div class="panel-num">1</div>
-        <div class="panel-emoji">🧑‍💼</div>
-        <div class="panel-text">평범한 직장인이었던 당신</div>
+    <div id="comicViewer" class="comic-viewer" onclick="nextComicPanel()"></div>
+    <div class="inner">
+      <div class="comic-grid" id="comicFallback" style="display:none;">
+        <div class="comic-panel">
+          <div class="panel-num">1</div>
+          <div class="panel-emoji">🧑‍💼</div>
+          <div class="panel-text">평범한 직장인이었던 당신</div>
+        </div>
+        <div class="comic-panel">
+          <div class="panel-num">2</div>
+          <div class="panel-emoji">📜🏔️</div>
+          <div class="panel-text">어느 날, 부모님으로부터 300ha의 산을 물려받았다</div>
+        </div>
+        <div class="comic-panel">
+          <div class="panel-num">3</div>
+          <div class="panel-emoji">🤔💭</div>
+          <div class="panel-text">어떻게 활용해야 할지 막막했지만...</div>
+        </div>
+        <div class="comic-panel">
+          <div class="panel-num">4</div>
+          <div class="panel-emoji">💪🌲</div>
+          <div class="panel-text">경제성과 환경, 지역사회까지 지켜내는 산림경영에 도전하기로 했다!</div>
+        </div>
       </div>
-      <div class="comic-panel">
-        <div class="panel-num">2</div>
-        <div class="panel-emoji">📜🏔️</div>
-        <div class="panel-text">어느 날, 부모님으로부터 300ha의 산을 물려받았다</div>
-      </div>
-      <div class="comic-panel">
-        <div class="panel-num">3</div>
-        <div class="panel-emoji">🤔💭</div>
-        <div class="panel-text">어떻게 활용해야 할지 막막했지만...</div>
-      </div>
-      <div class="comic-panel">
-        <div class="panel-num">4</div>
-        <div class="panel-emoji">💪🌲</div>
-        <div class="panel-text">경제성과 환경, 지역사회까지 지켜내는 산림경영에 도전하기로 했다!</div>
+      <div id="comicNav" class="comic-nav">
+        <div id="comicDots" class="comic-dots"></div>
+        <button id="comicNextBtn" onclick="nextComicPanel()">다음</button>
       </div>
     </div>
-    <button id="comicConfirmBtn" onclick="showIntroRules()">확인</button>
   </div>
 </div>
 
@@ -1044,9 +1069,39 @@ function doAction(action){
   render(prev);
 }
 
+const COMIC_POSITIONS = ['0% 0%', '100% 0%', '0% 100%', '100% 100%'];
+let comicPanelIndex = 0;
+
+function renderComicPanel(){
+  document.getElementById('comicViewer').style.backgroundPosition = COMIC_POSITIONS[comicPanelIndex];
+  const dots = document.getElementById('comicDots');
+  dots.innerHTML = COMIC_POSITIONS.map((_,i)=>`<span class="${i===comicPanelIndex?'on':''}"></span>`).join('');
+  document.getElementById('comicNextBtn').textContent = (comicPanelIndex === COMIC_POSITIONS.length-1) ? '확인' : '다음';
+}
+
+function nextComicPanel(){
+  if(comicPanelIndex < COMIC_POSITIONS.length - 1){
+    comicPanelIndex += 1;
+    renderComicPanel();
+  } else {
+    showIntroRules();
+  }
+}
+
 function showComic(){
   document.getElementById('coverScreen').style.display='none';
   document.getElementById('comicScreen').style.display='flex';
+  comicPanelIndex = 0;
+  renderComicPanel();
+
+  // 이미지 로드 실패 시 이모지 4컷 그리드로 대체 표시
+  const testImg = new Image();
+  testImg.onerror = () => {
+    document.getElementById('comicViewer').style.display = 'none';
+    document.getElementById('comicNav').style.display = 'none';
+    document.getElementById('comicFallback').style.display = 'grid';
+  };
+  testImg.src = 'asset/comic.png';
 }
 
 function showIntroRules(){
