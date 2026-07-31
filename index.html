@@ -714,9 +714,9 @@ function getActions(zone){
       enabled: road && age>=20 && age>=zone.harvestBanUntilAge,
       run(){ state.gold += 3*yg-1; state.health-=4; state.community-=2; log(`[${zone.name}] 🪓 개벌 (자금 +${(3*yg).toFixed(1)})`); zone.ageYears=0; zone.plantedThisCycle=false; zone.carbonUsed=false; zone.harvestBanUntilAge=0; } },
     { key:'selective', name:'목재 생산 · 택벌', cost:`자금 +${(1.5*yg-2).toFixed(1)} · 건강도 -0.3`,
-      eff:'숲 나이 유지', cond:`임도 설치 · 어린숲(20년차) 이상${zone.harvestBanUntilAge>0?` · ${zone.harvestBanUntilAge}년차까지 벌채 금지 중`:''}`,
+      eff:'나이 10년 감소(완전 초기화는 아님)', cond:`임도 설치 · 어린숲(20년차) 이상${zone.harvestBanUntilAge>0?` · ${zone.harvestBanUntilAge}년차까지 벌채 금지 중`:''}`,
       enabled: road && age>=20 && age>=zone.harvestBanUntilAge,
-      run(){ state.gold += 1.5*yg-2; state.health-=0.3; log(`[${zone.name}] 🪚 택벌 (자금 +${(1.5*yg).toFixed(1)})`); } },
+      run(){ state.gold += 1.5*yg-2; state.health-=0.3; zone.ageYears = Math.max(0, zone.ageYears-10); log(`[${zone.name}] 🪚 택벌 (자금 +${(1.5*yg).toFixed(1)}, 나이 -10년)`); } },
     { key:'resort', name:'휴양림 조성', cost:'자금 -15 · 만족도 +3',
       eff:'이후 매년 자금 +지역사회만족도', cond:'임도 설치 · 무성한 숲(30년차) 이상 · 전체 3개 구역 중 1곳만 가능',
       enabled: road && age>=30 && !zone.resortBuilt && !state.zones.some(z=>z.resortBuilt),
@@ -732,7 +732,7 @@ function getActions(zone){
 }
 
 function endOfTurnRoutine(){
-  state.zones.forEach(z=>{ if(z.resortBuilt) state.gold += Math.max(0,state.community); });
+  state.zones.forEach(z=>{ if(z.resortBuilt) state.gold += Math.min(10, Math.max(0,state.community)); });
 
   if(state.turn % 3 === 0){
     const baseFireChance = 0.75;
@@ -819,9 +819,9 @@ function checkEndings(){
   if(state.turn > MAX_TURNS){
     const g=state.gold, h=state.health, c=state.community;
     if(g>=500 && h>=35 && c>=30) showEnd('BEST','숲과 함께 푸른 미래를 만드는 산주','축하합니다! 경제적 수익, 환경 보전, 지역사회 상생이라는 세 마리 토끼를 모두 잡았습니다.','best');
-    else if(g>=300 && h>=5 && c>=5) showEnd('경영 특화','알짜배기 임업 기업가','탁월한 비즈니스 감각으로 산림을 통해 상당한 부를 축적했습니다! 다만 생태적 깊이나 지역 친밀함은 아쉬움으로 남습니다.','business');
-    else if(h>=35 && g>=5 && c>=5) showEnd('환경 특화','울창한 숲의 수호자','숲은 동식물이 숨 쉬는 청정 생태계로 거듭났습니다! 통장 잔고는 넉넉지 않지만 마음만은 풍요롭습니다.','environment');
-    else if(c>=15 && g>=5 && h>=5) showEnd('사회 특화','마을의 든든한 숲 보물섬','숲을 활용해 마을에 활력을 불어넣었습니다! 주민들은 당신을 든든한 이웃이라 부릅니다.','community');
+    else if(g>=450 && h>=5 && c>=5) showEnd('경영 특화','알짜배기 임업 기업가','탁월한 비즈니스 감각으로 산림을 통해 상당한 부를 축적했습니다! 다만 생태적 깊이나 지역 친밀함은 아쉬움으로 남습니다.','business');
+    else if(h>=53 && g>=5 && c>=5) showEnd('환경 특화','울창한 숲의 수호자','숲은 동식물이 숨 쉬는 청정 생태계로 거듭났습니다! 통장 잔고는 넉넉지 않지만 마음만은 풍요롭습니다.','environment');
+    else if(c>=23 && g>=5 && h>=5) showEnd('사회 특화','마을의 든든한 숲 보물섬','숲을 활용해 마을에 활력을 불어넣었습니다! 주민들은 당신을 든든한 이웃이라 부릅니다.','community');
     else showEnd('보통','평범한 숲의 관리자','100년 동안 숲을 유지하며 무사히 임기를 마쳤습니다. 다음번엔 확실한 전략을 세워보는 건 어떨까요?','normal');
     return true;
   }
