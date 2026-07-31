@@ -44,16 +44,14 @@
   ========================================================= */
   #coverScreen{
     min-height:100vh;
-    display:flex; align-items:flex-end; justify-content:center;
-    padding:40px 20px;
-    background-image:url('asset/cover.png');
-    background-size:cover; background-position:center;
-    position:relative;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:24px 20px; gap:22px;
+    background:radial-gradient(ellipse at top, #1E3324 0%, var(--bg) 55%, var(--bg-deep) 100%);
   }
-  #coverScreen::before{
-    content:"";
-    position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(10,15,10,.85) 100%);
+  .cover-img{
+    width:100%; max-width:560px; height:auto; display:block;
+    border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
   }
   #coverStartBtn{
     position:relative; z-index:2;
@@ -412,6 +410,8 @@
 
 <!-- ============== COVER SCREEN ============== -->
 <div id="coverScreen">
+  <img src="asset/cover.png" alt="100년숲 경영" class="cover-img"
+    onerror="this.style.display='none';">
   <button id="coverStartBtn" onclick="showComic()">🌲 게임 시작</button>
 </div>
 
