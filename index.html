@@ -46,7 +46,7 @@
     min-height:100vh;
     display:flex; align-items:flex-end; justify-content:center;
     padding:40px 20px;
-    background-image:url('assets/cover.png');
+    background-image:url('asset/cover.png');
     background-size:cover; background-position:center;
     position:relative;
   }
@@ -419,7 +419,7 @@
 <div id="comicScreen">
   <div class="comic-card">
     <h2>당신의 이야기</h2>
-    <img src="assets/comic.png" alt="4컷 만화" class="comic-img"
+    <img src="asset/comic.png" alt="4컷 만화" class="comic-img"
       onerror="this.style.display='none'; document.getElementById('comicFallback').style.display='grid';">
     <div class="comic-grid" id="comicFallback" style="display:none;">
       <div class="comic-panel">
@@ -810,7 +810,7 @@ function showEnd(badge,title,text,imgKey){
   document.getElementById('endText').textContent = text;
   const endImg = document.getElementById('endImage');
   endImg.style.display = 'none';
-  endImg.src = `assets/ending-${imgKey}.png`;
+  endImg.src = `asset/ending-${imgKey}.png`;
 
   lastFinalStats = {
     gold: state.gold, health: state.health, community: state.community,
