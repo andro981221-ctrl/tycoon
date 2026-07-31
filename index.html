@@ -40,11 +40,91 @@
   button{font-family:inherit;}
 
   /* =========================================================
+     COVER SCREEN
+  ========================================================= */
+  #coverScreen{
+    min-height:100vh;
+    display:flex; align-items:flex-end; justify-content:center;
+    padding:40px 20px;
+    background-image:url('assets/cover.png');
+    background-size:cover; background-position:center;
+    position:relative;
+  }
+  #coverScreen::before{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(10,15,10,.85) 100%);
+  }
+  #coverStartBtn{
+    position:relative; z-index:2;
+    background:linear-gradient(180deg, #E9C468, #C89B3C);
+    color:#2A1B08; border:2px solid #7A5A1E;
+    padding:16px 48px; border-radius:14px; font-size:19px; font-weight:900;
+    cursor:pointer; letter-spacing:.03em;
+    box-shadow:0 8px 0 #7A5A1E, 0 14px 26px rgba(0,0,0,.4);
+    transition:transform .1s;
+    font-family:'Noto Serif KR', serif;
+  }
+  #coverStartBtn:hover{transform:translateY(-2px);}
+  #coverStartBtn:active{transform:translateY(4px); box-shadow:0 4px 0 #7A5A1E, 0 8px 16px rgba(0,0,0,.4);}
+
+  /* =========================================================
+     COMIC (4-PANEL STORY) SCREEN
+  ========================================================= */
+  #comicScreen{
+    display:none;
+    min-height:100vh; align-items:center; justify-content:center; padding:24px;
+  }
+  .comic-card{
+    max-width:640px; width:100%;
+    background:var(--surface); color:var(--ink);
+    border-radius:22px; padding:30px 26px;
+    box-shadow:0 24px 60px rgba(0,0,0,.45);
+  }
+  .comic-card h2{
+    font-family:'Noto Serif KR', serif; font-weight:900; font-size:22px;
+    text-align:center; margin:0 0 20px;
+  }
+  .comic-img{
+    width:100%; border-radius:12px; margin-bottom:22px; display:block;
+    border:3px solid var(--ink);
+  }
+  .comic-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px;
+  }
+  @media (max-width:480px){ .comic-grid{grid-template-columns:1fr;} }
+  .comic-panel{
+    background:var(--surface-dim);
+    border:3px solid var(--ink);
+    border-radius:10px;
+    padding:16px 12px 14px;
+    text-align:center;
+    position:relative;
+  }
+  .comic-panel .panel-num{
+    position:absolute; top:-11px; left:10px;
+    background:var(--ink); color:var(--surface);
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700;
+    width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .comic-panel .panel-emoji{ font-size:44px; margin:6px 0 10px; }
+  .comic-panel .panel-text{ font-size:13.5px; line-height:1.5; color:var(--ink); }
+  #comicConfirmBtn{
+    width:100%;
+    background:var(--ink); color:var(--surface); border:none;
+    padding:16px; border-radius:14px; font-size:17px; font-weight:900;
+    cursor:pointer; letter-spacing:.02em;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+  }
+
+  /* =========================================================
      INTRO SCREEN
   ========================================================= */
   #introScreen{
+    display:none;
     min-height:100vh;
-    display:flex; align-items:center; justify-content:center;
+    align-items:center; justify-content:center;
     padding:24px;
   }
   .intro-card{
@@ -282,6 +362,10 @@
     border-radius:18px; padding:30px 28px; text-align:center;
     box-shadow:0 20px 50px rgba(0,0,0,.5);
   }
+  .end-img{
+    display:none; width:100%; max-height:260px; object-fit:cover;
+    border-radius:14px; margin-bottom:16px; border:2px solid rgba(0,0,0,.1);
+  }
   .end-card .badge{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; color:var(--clay-deep); text-transform:uppercase; margin-bottom:8px;}
   .end-card h2{font-family:'Noto Serif KR',serif; font-size:22px; margin:0 0 14px;}
   .end-card p{font-size:14.5px; line-height:1.6; color:var(--ink-soft); margin:0 0 20px;}
@@ -326,17 +410,53 @@
 </head>
 <body>
 
+<!-- ============== COVER SCREEN ============== -->
+<div id="coverScreen">
+  <button id="coverStartBtn" onclick="showComic()">🌲 게임 시작</button>
+</div>
+
+<!-- ============== COMIC (4-PANEL STORY) SCREEN ============== -->
+<div id="comicScreen">
+  <div class="comic-card">
+    <h2>당신의 이야기</h2>
+    <img src="assets/comic.png" alt="4컷 만화" class="comic-img"
+      onerror="this.style.display='none'; document.getElementById('comicFallback').style.display='grid';">
+    <div class="comic-grid" id="comicFallback" style="display:none;">
+      <div class="comic-panel">
+        <div class="panel-num">1</div>
+        <div class="panel-emoji">🧑‍💼</div>
+        <div class="panel-text">평범한 직장인이었던 당신</div>
+      </div>
+      <div class="comic-panel">
+        <div class="panel-num">2</div>
+        <div class="panel-emoji">📜🏔️</div>
+        <div class="panel-text">어느 날, 부모님으로부터 300ha의 산을 물려받았다</div>
+      </div>
+      <div class="comic-panel">
+        <div class="panel-num">3</div>
+        <div class="panel-emoji">🤔💭</div>
+        <div class="panel-text">어떻게 활용해야 할지 막막했지만...</div>
+      </div>
+      <div class="comic-panel">
+        <div class="panel-num">4</div>
+        <div class="panel-emoji">💪🌲</div>
+        <div class="panel-text">경제성과 환경, 지역사회까지 지켜내는 산림경영에 도전하기로 했다!</div>
+      </div>
+    </div>
+    <button id="comicConfirmBtn" onclick="showIntroRules()">확인</button>
+  </div>
+</div>
+
 <!-- ============== INTRO SCREEN ============== -->
 <div id="introScreen">
   <div class="intro-card">
     <div class="intro-eyebrow">Forest Management Ledger · 초안</div>
     <h1>100년숲 경영</h1>
-    <p class="lead">평범한 직장인이던 당신은 부모님으로부터 300ha 규모의 산을 상속받았습니다.
-    이제 산주가 되어 10턴(100년) 동안 산림을 경영하며, 경제성과 환경성, 지역사회와의 관계를 모두 지켜내야 합니다.</p>
 
     <ul class="rule-list">
       <li><span class="ico">🗺️</span><div><b>3개 구역 경영</b>300ha의 산을 3개 구역으로 나누어 경영합니다.</div></li>
       <li><span class="ico">⏳</span><div><b>10턴 = 100년</b>한 턴마다 10번의 선택(=10년)을 하고, 총 10턴이 지나면 경영이 마무리됩니다.</div></li>
+      <li><span class="ico">💸</span><div><b>매년 관리비 -0.3</b>아무것도 안 해도 산림 유지·관리 비용으로 매년 자금이 조금씩 빠져나갑니다.</div></li>
       <li><span class="ico">⚖️</span><div><b>균형이 핵심</b>자금만 좇으면 숲이 죽고, 숲만 지키면 파산합니다. 세 지표를 함께 관리하세요.</div></li>
       <li><span class="ico">🔥</span><div><b>돌발 변수</b>산불과 지역 축제 같은 예측 못한 사건이 경영에 영향을 줍니다.</div></li>
     </ul>
@@ -459,6 +579,8 @@
 
 <div class="overlay" id="overlay">
   <div class="end-card">
+    <img id="endImage" class="end-img" src="" alt="엔딩 이미지"
+      onerror="this.style.display='none';" onload="this.style.display='block';">
     <div class="badge" id="endBadge">ENDING</div>
     <h2 id="endTitle">엔딩</h2>
     <p id="endText"></p>
@@ -575,7 +697,7 @@ function getActions(zone){
       enabled: road && age>=30 && !zone.resortBuilt && !state.zones.some(z=>z.resortBuilt),
       run(){ state.gold-=15; state.community+=3; zone.resortBuilt=true; log(`[${zone.name}] ⛺ 휴양림 조성 완료`); } },
     { key:'carbon', name:'탄소크레딧 발행 (벌기령 연장)', cost:'건강도 +3 · 만족도 +2',
-      eff:'5년마다 자금 +0.5×산림건강도 · 41년차까지 목재생산 금지 · 개벌 시 초기화', cond:'조림 직후부터 가능 · 구역당 1회',
+      eff:'41년차까지 5년마다 자금 +0.5×산림건강도 지급 · 41년차부터 벌채 가능(효과 소멸) · 개벌·산불 시 초기화', cond:'조림 직후부터 가능 · 구역당 1회',
       enabled: zone.plantedThisCycle && !zone.carbonUsed,
       run(){ state.health+=3; state.community+=2; zone.carbonUsed=true; zone.harvestBanUntilAge=41; zone.lastCarbonPayoutYear=state.totalYears; log(`[${zone.name}] ♻️ 탄소크레딧 발행`, true); } },
     { key:'wait', name:'아무것도 하지 않기', cost:'건강도 +0.3', eff:'-', cond:'-',
@@ -596,7 +718,13 @@ function endOfTurnRoutine(){
       const dmgMul = anyRoad ? 0.7 : 1;
       const hitZone = state.zones[Math.floor(Math.random()*state.zones.length)];
       state.gold -= 10.05*dmgMul; state.health -= 5*dmgMul; state.community -= 4.05*dmgMul;
-      const msg = `자금 -${(10.05*dmgMul).toFixed(1)} · 건강도 -${(5*dmgMul).toFixed(1)} · 만족도 -${(4.05*dmgMul).toFixed(1)}`;
+      const wasPlanted = hitZone.plantedThisCycle;
+      hitZone.ageYears = 0;
+      hitZone.plantedThisCycle = false;
+      hitZone.carbonUsed = false;
+      hitZone.harvestBanUntilAge = 0;
+      const msg = `자금 -${(10.05*dmgMul).toFixed(1)} · 건강도 -${(5*dmgMul).toFixed(1)} · 만족도 -${(4.05*dmgMul).toFixed(1)}`
+        + (wasPlanted ? ` · ${hitZone.name} 산림 전소(민둥산화, 탄소크레딧 효과 소멸)` : '');
       log(`🔥 ${hitZone.name} 산불 발생! ${msg}`, true);
       pendingEvents.push({icon:'🔥', title:`${hitZone.name} 산불 발생!`, text:msg});
     } else {
@@ -660,26 +788,29 @@ function saveCheckpoint(turnNum){
 }
 
 function checkEndings(){
-  if(state.gold <= -10){ showEnd('실패','[경영 실패] 경매로 넘어간 숲','무분별한 투자와 무리한 운영으로 부채를 감당하지 못했습니다. 결국 숲은 경매로 넘어가고, 당신은 씁쓸한 마음으로 산을 떠납니다.'); return true; }
-  if(state.health <= 0){ showEnd('실패','[생태 파괴] 민둥산이 된 숲','눈앞의 이익을 위해 숲을 지나치게 훼손했습니다. 이 산에서 지속가능한 미래를 기대하기는 어려워졌습니다.'); return true; }
-  if(state.community <= 0){ showEnd('실패','[지역 갈등] 주민들의 외면','지역사회와의 소통 없이 일방적인 경영을 이어갔습니다. 숲은 소통이 끊긴 고립된 섬이 되었습니다.'); return true; }
+  if(state.gold <= -10){ showEnd('실패','[경영 실패] 경매로 넘어간 숲','무분별한 투자와 무리한 운영으로 부채를 감당하지 못했습니다. 결국 숲은 경매로 넘어가고, 당신은 씁쓸한 마음으로 산을 떠납니다.','fail-bankrupt'); return true; }
+  if(state.health <= 0){ showEnd('실패','[생태 파괴] 민둥산이 된 숲','눈앞의 이익을 위해 숲을 지나치게 훼손했습니다. 이 산에서 지속가능한 미래를 기대하기는 어려워졌습니다.','fail-ecology'); return true; }
+  if(state.community <= 0){ showEnd('실패','[지역 갈등] 주민들의 외면','지역사회와의 소통 없이 일방적인 경영을 이어갔습니다. 숲은 소통이 끊긴 고립된 섬이 되었습니다.','fail-community'); return true; }
   if(state.turn > MAX_TURNS){
     const g=state.gold, h=state.health, c=state.community;
-    if(g>=500 && h>=20 && c>=30) showEnd('BEST','숲과 함께 푸른 미래를 만드는 산주','축하합니다! 경제적 수익, 환경 보전, 지역사회 상생이라는 세 마리 토끼를 모두 잡았습니다.');
-    else if(g>=300 && h>=5 && c>=5) showEnd('경영 특화','알짜배기 임업 기업가','탁월한 비즈니스 감각으로 산림을 통해 상당한 부를 축적했습니다! 다만 생태적 깊이나 지역 친밀함은 아쉬움으로 남습니다.');
-    else if(h>=15 && g>=5 && c>=5) showEnd('환경 특화','울창한 숲의 수호자','숲은 동식물이 숨 쉬는 청정 생태계로 거듭났습니다! 통장 잔고는 넉넉지 않지만 마음만은 풍요롭습니다.');
-    else if(c>=15 && g>=5 && h>=5) showEnd('사회 특화','마을의 든든한 숲 보물섬','숲을 활용해 마을에 활력을 불어넣었습니다! 주민들은 당신을 든든한 이웃이라 부릅니다.');
-    else showEnd('보통','평범한 숲의 관리자','100년 동안 숲을 유지하며 무사히 임기를 마쳤습니다. 다음번엔 확실한 전략을 세워보는 건 어떨까요?');
+    if(g>=500 && h>=35 && c>=30) showEnd('BEST','숲과 함께 푸른 미래를 만드는 산주','축하합니다! 경제적 수익, 환경 보전, 지역사회 상생이라는 세 마리 토끼를 모두 잡았습니다.','best');
+    else if(g>=300 && h>=5 && c>=5) showEnd('경영 특화','알짜배기 임업 기업가','탁월한 비즈니스 감각으로 산림을 통해 상당한 부를 축적했습니다! 다만 생태적 깊이나 지역 친밀함은 아쉬움으로 남습니다.','business');
+    else if(h>=35 && g>=5 && c>=5) showEnd('환경 특화','울창한 숲의 수호자','숲은 동식물이 숨 쉬는 청정 생태계로 거듭났습니다! 통장 잔고는 넉넉지 않지만 마음만은 풍요롭습니다.','environment');
+    else if(c>=15 && g>=5 && h>=5) showEnd('사회 특화','마을의 든든한 숲 보물섬','숲을 활용해 마을에 활력을 불어넣었습니다! 주민들은 당신을 든든한 이웃이라 부릅니다.','community');
+    else showEnd('보통','평범한 숲의 관리자','100년 동안 숲을 유지하며 무사히 임기를 마쳤습니다. 다음번엔 확실한 전략을 세워보는 건 어떨까요?','normal');
     return true;
   }
   return false;
 }
 
-function showEnd(badge,title,text){
+function showEnd(badge,title,text,imgKey){
   state.ended=true;
   document.getElementById('endBadge').textContent = badge;
   document.getElementById('endTitle').textContent = title;
   document.getElementById('endText').textContent = text;
+  const endImg = document.getElementById('endImage');
+  endImg.style.display = 'none';
+  endImg.src = `assets/ending-${imgKey}.png`;
 
   lastFinalStats = {
     gold: state.gold, health: state.health, community: state.community,
@@ -890,11 +1021,13 @@ function doAction(action){
   action.run();
   state.choicesThisTurn += 1;
   state.totalYears += 1;
+  // 매년 산림 유지·관리에 드는 고정 비용
+  state.gold -= 0.3;
   // 실제 경과 연도에 따라 심어진 모든 구역의 숲 나이가 매년 자동으로 자람 (턴 경계와 무관)
   state.zones.forEach(z=>{ if(z.plantedThisCycle) z.ageYears += 1; });
-  // 탄소크레딧 발행 구역은 5년마다 자금 +0.5×산림건강도 정기 수익 지급
+  // 탄소크레딧 발행 구역은 41년차 되기 전까지, 5년마다 자금 +0.5×산림건강도 정기 수익 지급
   state.zones.forEach(z=>{
-    if(z.carbonUsed && (state.totalYears - z.lastCarbonPayoutYear) >= 5){
+    if(z.carbonUsed && z.ageYears<41 && (state.totalYears - z.lastCarbonPayoutYear) >= 5){
       const payout = 0.5*state.health;
       state.gold += payout;
       z.lastCarbonPayoutYear = state.totalYears;
@@ -911,6 +1044,16 @@ function doAction(action){
   render(prev);
 }
 
+function showComic(){
+  document.getElementById('coverScreen').style.display='none';
+  document.getElementById('comicScreen').style.display='flex';
+}
+
+function showIntroRules(){
+  document.getElementById('comicScreen').style.display='none';
+  document.getElementById('introScreen').style.display='flex';
+}
+
 function startGame(){
   document.getElementById('introScreen').style.display='none';
   document.getElementById('gameScreen').style.display='block';
@@ -923,8 +1066,10 @@ function restart(){
   pendingEvents = [];
   document.getElementById('overlay').classList.remove('show');
   document.getElementById('eventOverlay').classList.remove('show');
-  document.getElementById('introScreen').style.display='flex';
   document.getElementById('gameScreen').style.display='none';
+  document.getElementById('introScreen').style.display='none';
+  document.getElementById('comicScreen').style.display='none';
+  document.getElementById('coverScreen').style.display='flex';
 }
 
 state = freshState();
