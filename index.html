@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>100년 경영 산림경영</title>
+<title>100년숲 경영</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -99,26 +99,33 @@
   ========================================================= */
   #gameScreen{display:none;}
 
+  .sticky-top{
+    position:sticky; top:0; z-index:40;
+    background:linear-gradient(180deg, #1E3324 0%, var(--bg) 75%, var(--bg) 100%);
+    margin:-20px -16px 0; padding:14px 16px 10px;
+    box-shadow:0 10px 18px -6px rgba(0,0,0,.5);
+  }
+
   .hud{
     display:flex; align-items:center; justify-content:space-between;
     gap:12px; flex-wrap:wrap; margin-bottom:16px;
   }
   .hud-stats{display:flex; gap:8px; flex-wrap:wrap;}
   .hud-chip{
-    display:flex; flex-direction:column; align-items:center; gap:2px;
+    display:flex; flex-direction:column; align-items:center; gap:1px;
     background:rgba(239,231,216,0.1);
     border:1px solid rgba(239,231,216,0.18);
-    border-radius:14px; padding:8px 14px;
+    border-radius:12px; padding:5px 10px;
     font-family:'IBM Plex Mono',monospace;
     position:relative;
   }
-  .hud-chip .ico{font-size:20px; line-height:1;}
+  .hud-chip .ico{font-size:15px; line-height:1;}
   .hud-chip .lbl-text{
     font-family:'Noto Sans KR','Malgun Gothic',sans-serif;
-    font-size:11px; font-weight:700; color:#B9C4B0; letter-spacing:-0.01em;
+    font-size:9.5px; font-weight:700; color:#B9C4B0; letter-spacing:-0.01em;
     white-space:nowrap;
   }
-  .hud-chip .val{font-size:17px; font-weight:700;}
+  .hud-chip .val{font-size:14px; font-weight:700;}
   .hud-chip .delta{
     position:absolute; top:-16px; left:50%; transform:translateX(-50%);
     font-size:12.5px; font-weight:700; opacity:0; transition:opacity .2s, transform .2s;
@@ -132,10 +139,10 @@
   .hud-chip.clay{border-color:rgba(177,92,66,.5);}
 
   .hud-turn{
-    display:flex; align-items:center; gap:8px;
-    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#B9C4B0;
+    display:flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:#B9C4B0;
   }
-  .ring-dial{position:relative; width:52px; height:52px; flex:none;}
+  .ring-dial{position:relative; width:38px; height:38px; flex:none;}
   .ring-dial svg{width:100%;height:100%;}
 
   #checkpointRow{display:flex; gap:4px;}
@@ -155,6 +162,23 @@
   .game-title-row .year-big{
     font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold); font-weight:700;
   }
+  .info-btn{
+    flex:none; width:30px; height:30px; border-radius:50%;
+    background:rgba(239,231,216,0.12); border:1.5px solid rgba(239,231,216,0.3);
+    color:var(--surface); font-weight:900; font-size:15px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .info-btn:hover{background:rgba(239,231,216,0.22);}
+
+  .glance-col{
+    display:flex; flex-direction:column; gap:3px; margin-left:4px;
+    font-size:10.5px; font-weight:600;
+  }
+  .glance-chip{
+    background:rgba(239,231,216,0.1); border:1px solid rgba(239,231,216,0.18);
+    border-radius:12px; padding:2px 9px; color:#D9E0D1; white-space:nowrap;
+  }
+  .glance-chip b{color:var(--gold); font-weight:700;}
 
   /* ---- Zone tabs (prominent, top) ---- */
   .section-label{
@@ -271,6 +295,21 @@
     font-size:13.5px;
   }
 
+  #submitScoreBtn{
+    padding:9px 16px !important; font-size:13.5px !important; border-radius:10px !important;
+  }
+  #submitScoreBtn:disabled{ opacity:.5; cursor:not-allowed; }
+  .lb-row{
+    display:flex; align-items:center; gap:8px; padding:6px 8px;
+    border-bottom:1px solid rgba(0,0,0,.08); color:var(--ink);
+  }
+  .lb-row:last-child{ border-bottom:none; }
+  .lb-rank{ font-family:'IBM Plex Mono',monospace; font-weight:800; width:22px; flex:none; color:var(--gold-deep); }
+  .lb-name{ flex:1; font-weight:700; }
+  .lb-ending{ font-size:11px; color:var(--ink-soft); }
+  .lb-score{ font-family:'IBM Plex Mono',monospace; font-weight:700; }
+  .lb-row.me{ background:rgba(200,155,60,.15); border-radius:8px; }
+
   #eventOverlay{ z-index:60; }
   .event-block{ margin-bottom:14px; }
   .event-block:last-child{ margin-bottom:0; }
@@ -291,7 +330,7 @@
 <div id="introScreen">
   <div class="intro-card">
     <div class="intro-eyebrow">Forest Management Ledger · 초안</div>
-    <h1>100년 경영 산림경영</h1>
+    <h1>100년숲 경영</h1>
     <p class="lead">평범한 직장인이던 당신은 부모님으로부터 300ha 규모의 산을 상속받았습니다.
     이제 산주가 되어 10턴(100년) 동안 산림을 경영하며, 경제성과 환경성, 지역사회와의 관계를 모두 지켜내야 합니다.</p>
 
@@ -316,6 +355,7 @@
 <div id="gameScreen">
   <div class="wrap">
 
+    <div class="sticky-top">
     <div class="hud">
       <div class="hud-stats">
         <div class="hud-chip gold">
@@ -344,11 +384,14 @@
           <div id="turnLabel">1 / 10 턴</div>
           <div id="checkpointRow" style="margin-top:2px;"></div>
         </div>
+        <div class="glance-col" id="glanceBar"></div>
       </div>
     </div>
 
     <div class="game-title-row">
-      <h1>🌲 산림 경영 대장</h1>
+      <h1>🌲 100년숲 경영 대장</h1>
+      <button class="info-btn" onclick="showInfoModal()">?</button>
+    </div>
     </div>
 
     <div class="section-label">구역 선택 · 경영할 구역을 클릭하세요</div>
@@ -371,6 +414,42 @@
   </div>
 </div>
 
+<div class="overlay" id="infoOverlay">
+  <div class="end-card" style="max-width:420px; text-align:left;">
+    <h2 style="text-align:center; margin-bottom:16px;">🌲 숲 성장 기준표</h2>
+    <table style="width:100%; border-collapse:collapse; font-size:13.5px; color:var(--ink);">
+      <tr style="border-bottom:1px solid rgba(0,0,0,.12);">
+        <td style="padding:7px 4px; font-weight:700;">🪨 민둥산</td>
+        <td style="padding:7px 4px; color:var(--ink-soft);">조림 전</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(0,0,0,.12);">
+        <td style="padding:7px 4px; font-weight:700;">🌱 새싹숲</td>
+        <td style="padding:7px 4px; color:var(--ink-soft);">0~10년차</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(0,0,0,.12);">
+        <td style="padding:7px 4px; font-weight:700;">🌿 어린숲</td>
+        <td style="padding:7px 4px; color:var(--ink-soft);">11~29년차</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(0,0,0,.12);">
+        <td style="padding:7px 4px; font-weight:700;">🌳 무성한 숲</td>
+        <td style="padding:7px 4px; color:var(--ink-soft);">30~59년차</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 4px; font-weight:700;">🌲 오래된 숲</td>
+        <td style="padding:7px 4px; color:var(--ink-soft);">60년차 이상</td>
+      </tr>
+    </table>
+    <div style="margin:16px 0 4px; font-weight:700; font-size:13.5px;">사업별 가능 시점</div>
+    <table style="width:100%; border-collapse:collapse; font-size:13px; color:var(--ink-soft);">
+      <tr><td style="padding:4px;">🌳 숲가꾸기</td><td style="padding:4px;">11년차부터 (5년마다)</td></tr>
+      <tr><td style="padding:4px;">🪓🪚 개벌·택벌</td><td style="padding:4px;">20년차부터</td></tr>
+      <tr><td style="padding:4px;">♻️ 탄소크레딧(벌기령 연장)</td><td style="padding:4px;">조림 직후부터 가능 (41년차부터 벌채 가능, 5년마다 자금 +0.5×건강도)</td></tr>
+      <tr><td style="padding:4px;">⛺ 휴양림 조성</td><td style="padding:4px;">30년차부터</td></tr>
+    </table>
+    <button onclick="closeInfoModal()" style="margin-top:16px; width:100%;">닫기</button>
+  </div>
+</div>
+
 <div class="overlay" id="eventOverlay">
   <div class="end-card" id="eventCard">
     <div id="eventOverlayBody"></div>
@@ -383,6 +462,17 @@
     <div class="badge" id="endBadge">ENDING</div>
     <h2 id="endTitle">엔딩</h2>
     <p id="endText"></p>
+
+    <div id="leaderboardSection">
+      <div id="submitRow" style="display:flex; gap:8px; margin-bottom:14px;">
+        <input id="playerNameInput" type="text" maxlength="12" placeholder="이름을 입력하세요"
+          style="flex:1; padding:9px 12px; border-radius:10px; border:1.5px solid rgba(0,0,0,.15); font-size:14px;">
+        <button id="submitScoreBtn" onclick="submitScore()" style="white-space:nowrap;">순위 등록</button>
+      </div>
+      <div id="leaderboardStatus" style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;"></div>
+      <div id="leaderboardList" style="text-align:left; font-size:13.5px; margin-bottom:14px; max-height:200px; overflow-y:auto;"></div>
+    </div>
+
     <div id="checkpointBtns" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
     <button onclick="restart()">처음부터 다시 경영하기</button>
   </div>
@@ -407,6 +497,13 @@ let checkpoints = {};
 let pendingEvents = [];
 const CHECKPOINT_TURNS = [3,6,10];
 
+// ===== 리더보드 설정 =====
+// 아래 SCRIPT_URL에 배포한 Google Apps Script 웹앱 주소를 붙여넣으세요.
+// (설정 방법은 README.md 참고)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsh3yGw9gL40VzkhhzbZbxnre23CvfHa889cgdHT_kOvcdByNOBlfjgvpOaSsFQB3t/exec';
+let lastFinalStats = null; // 엔딩 시점 최종 스탯 저장용
+let scoreSubmitted = false;
+
 function freshState(){
   return {
     turn: 1,
@@ -418,9 +515,9 @@ function freshState(){
     activeZone: null,
     zones: [0,1,2].map(i => ({
       id:i, name:`${i+1}구역`,
-      yeongGeup:0, roadBuilt:false,
-      resortBuilt:false, carbonUsed:false,
-      fireResistStacks:0, timberBanTurns:0, lastGatherYear:-99, lastTendYear:-99
+      ageYears:0, roadBuilt:false,
+      resortBuilt:false, carbonUsed:false, plantedThisCycle:false,
+      fireResistStacks:0, harvestBanUntilAge:0, lastGatherYear:-99, lastTendYear:-99, lastCarbonPayoutYear:-99
     })),
     log: [], ended:false
   };
@@ -433,42 +530,54 @@ function log(msg, isEvent=false){
 }
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 
+// 영급(전문용어) 대신 실제 경과 연수(년차)로 숲 나이를 표현
+// 조림 후 매년(선택 1회=1년) 자동으로 나이가 들며, 턴 경계와 무관하게 계속 자람
+function stageInfo(zone){
+  if(!zone.plantedThisCycle) return {icon:'🪨', label:'민둥산'};
+  const age = zone.ageYears;
+  if(age<=10) return {icon:'🌱', label:'새싹숲'};
+  if(age<=29) return {icon:'🌿', label:'어린숲'};
+  if(age<=59) return {icon:'🌳', label:'무성한 숲'};
+  return {icon:'🌲', label:'오래된 숲'};
+}
+
 function getActions(zone){
   const road = zone.roadBuilt;
-  const yg = zone.yeongGeup;
+  const age = zone.plantedThisCycle ? zone.ageYears : 0;
+  const yg = age/10; // 경제 공식용 환산치 (10년 = 기존 1영급과 동일한 배수)
   return [
     { key:'plant', name:'조림', cost:'자금 -2 · 건강도 +2 · 만족도 +1',
-      eff:'2턴 후 개벌·택벌 가능 (개벌 후 재조림 가능)', cond:'0영급 상태에서만 가능',
-      enabled: yg===0,
-      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.yeongGeup=0; log(`[${zone.name}] 🌱 조림 완료`); } },
+      eff:'심으면 매년 자라기 시작 (개벌 후 재조림 가능)', cond:'민둥산 상태에서 1회만 가능',
+      enabled: !zone.plantedThisCycle,
+      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.ageYears=0; zone.plantedThisCycle=true; log(`[${zone.name}] 🌱 조림 완료`); } },
     { key:'road', name:'임도 설치', cost:'자금 -1 · 건강도 -1',
       eff:'미설치 시 목재 생산 불가 · 산불 피해 30% 감소', cond:'구역당 1회',
       enabled: !road,
       run(){ state.gold-=1; state.health-=1; zone.roadBuilt=true; log(`[${zone.name}] 🛤️ 임도 설치 완료`); } },
     { key:'tend', name:'숲가꾸기', cost:'자금 -1 · 건강도 +1 · 만족도 +1',
-      eff:'산불 발생 확률 3%p 감소(누적)', cond:'임도 설치 · 1영급 이상 · 5년당 1회',
-      enabled: road && yg>=1 && (state.totalYears - zone.lastTendYear) >= 5,
+      eff:'산불 발생 확률 3%p 감소(누적)', cond:'임도 설치 · 어린숲(11년차) 이상 · 5년당 1회',
+      enabled: road && age>=11 && (state.totalYears - zone.lastTendYear) >= 5,
       run(){ state.gold-=1; state.health+=1; state.community+=1; zone.lastTendYear=state.totalYears; zone.fireResistStacks+=1; log(`[${zone.name}] 🌳 숲가꾸기 완료`); } },
     { key:'gather', name:'임산물 생산', cost:'자금 -0.5 → +2',
       eff:'2년당 1회 가능', cond:'2년당 1회',
       enabled: (state.totalYears - zone.lastGatherYear) >= 2,
       run(){ state.gold += -0.5+2; zone.lastGatherYear=state.totalYears; log(`[${zone.name}] 🍄 임산물 생산 (+1.5 자금)`); } },
     { key:'clearcut', name:'목재 생산 · 개벌', cost:`자금 +${(3*yg).toFixed(1)} · 건강도 -4 · 만족도 -2`,
-      eff:'영급 0으로 초기화', cond:'임도 설치 · 2영급 이상',
-      enabled: road && yg>=2 && zone.timberBanTurns<=0,
-      run(){ state.gold += 3*zone.yeongGeup-1; state.health-=4; state.community-=2; log(`[${zone.name}] 🪓 개벌 (자금 +${(3*zone.yeongGeup).toFixed(1)})`); zone.yeongGeup=0; zone.carbonUsed=false; zone.timberBanTurns=0; } },
-    { key:'selective', name:'목재 생산 · 택벌', cost:`자금 +${(1.5*yg-2).toFixed(1)} · 건강도 -1`,
-      eff:'영급 유지', cond:'임도 설치 · 2영급 이상',
-      enabled: road && yg>=2 && zone.timberBanTurns<=0,
-      run(){ state.gold += 1.5*zone.yeongGeup-2; state.health-=1; log(`[${zone.name}] 🪚 택벌 (자금 +${(1.5*zone.yeongGeup).toFixed(1)})`); } },
+      eff:'숲 나이가 민둥산(0년차)으로 초기화', cond:`임도 설치 · 어린숲(20년차) 이상${zone.harvestBanUntilAge>0?` · ${zone.harvestBanUntilAge}년차까지 벌채 금지 중`:''}`,
+      enabled: road && age>=20 && age>=zone.harvestBanUntilAge,
+      run(){ state.gold += 3*yg-1; state.health-=4; state.community-=2; log(`[${zone.name}] 🪓 개벌 (자금 +${(3*yg).toFixed(1)})`); zone.ageYears=0; zone.plantedThisCycle=false; zone.carbonUsed=false; zone.harvestBanUntilAge=0; } },
+    { key:'selective', name:'목재 생산 · 택벌', cost:`자금 +${(1.5*yg-2).toFixed(1)} · 건강도 -0.3`,
+      eff:'숲 나이 유지', cond:`임도 설치 · 어린숲(20년차) 이상${zone.harvestBanUntilAge>0?` · ${zone.harvestBanUntilAge}년차까지 벌채 금지 중`:''}`,
+      enabled: road && age>=20 && age>=zone.harvestBanUntilAge,
+      run(){ state.gold += 1.5*yg-2; state.health-=0.3; log(`[${zone.name}] 🪚 택벌 (자금 +${(1.5*yg).toFixed(1)})`); } },
     { key:'resort', name:'휴양림 조성', cost:'자금 -15 · 만족도 +3',
-      eff:'이후 매년 자금 +지역사회만족도', cond:'임도 설치 · 3영급 이상 · 전체 3개 구역 중 1곳만 가능',
-      enabled: road && yg>=3 && !zone.resortBuilt && !state.zones.some(z=>z.resortBuilt),
+      eff:'이후 매년 자금 +지역사회만족도', cond:'임도 설치 · 무성한 숲(30년차) 이상 · 전체 3개 구역 중 1곳만 가능',
+      enabled: road && age>=30 && !zone.resortBuilt && !state.zones.some(z=>z.resortBuilt),
       run(){ state.gold-=15; state.community+=3; zone.resortBuilt=true; log(`[${zone.name}] ⛺ 휴양림 조성 완료`); } },
-    { key:'carbon', name:'탄소크레딧 발행', cost:'자금 +5(+건강도 배수) · 건강도 +3 · 만족도 +2',
-      eff:'이후 3턴 목재생산 금지 · 개벌 시 초기화', cond:'2영급 산림 · 구역당 1회 · 휴양림 구역 불가',
-      enabled: yg===2 && !zone.carbonUsed && !zone.resortBuilt,
-      run(){ const bonus=5*state.health; state.gold+=5+bonus; state.health+=3; state.community+=2; zone.carbonUsed=true; zone.timberBanTurns=3; log(`[${zone.name}] ♻️ 탄소크레딧 발행 (자금 +${(5+bonus).toFixed(1)})`, true); } },
+    { key:'carbon', name:'탄소크레딧 발행 (벌기령 연장)', cost:'건강도 +3 · 만족도 +2',
+      eff:'5년마다 자금 +0.5×산림건강도 · 41년차까지 목재생산 금지 · 개벌 시 초기화', cond:'조림 직후부터 가능 · 구역당 1회',
+      enabled: zone.plantedThisCycle && !zone.carbonUsed,
+      run(){ state.health+=3; state.community+=2; zone.carbonUsed=true; zone.harvestBanUntilAge=41; zone.lastCarbonPayoutYear=state.totalYears; log(`[${zone.name}] ♻️ 탄소크레딧 발행`, true); } },
     { key:'wait', name:'아무것도 하지 않기', cost:'건강도 +0.3', eff:'-', cond:'-',
       enabled:true,
       run(){ state.health+=0.3; log(`[${zone.name}] 💤 관망`); } }
@@ -485,10 +594,11 @@ function endOfTurnRoutine(){
     if(Math.random() < fireChance){
       const anyRoad = state.zones.some(z=>z.roadBuilt);
       const dmgMul = anyRoad ? 0.7 : 1;
-      state.gold -= 20*dmgMul; state.health -= 8*dmgMul; state.community -= 8*dmgMul;
-      const msg = `자금 -${(20*dmgMul).toFixed(1)} · 건강도 -${(8*dmgMul).toFixed(1)} · 만족도 -${(8*dmgMul).toFixed(1)}`;
-      log(`🔥 산불 발생! ${msg}`, true);
-      pendingEvents.push({icon:'🔥', title:'산불 발생', text:msg});
+      const hitZone = state.zones[Math.floor(Math.random()*state.zones.length)];
+      state.gold -= 10.05*dmgMul; state.health -= 5*dmgMul; state.community -= 4.05*dmgMul;
+      const msg = `자금 -${(10.05*dmgMul).toFixed(1)} · 건강도 -${(5*dmgMul).toFixed(1)} · 만족도 -${(4.05*dmgMul).toFixed(1)}`;
+      log(`🔥 ${hitZone.name} 산불 발생! ${msg}`, true);
+      pendingEvents.push({icon:'🔥', title:`${hitZone.name} 산불 발생!`, text:msg});
     } else {
       log(`☁️ ${state.turn}턴 종료 — 산불 확률 ${(fireChance*100).toFixed(0)}%(3턴마다 판정)였지만 발생하지 않음`);
     }
@@ -511,7 +621,7 @@ function endOfTurnRoutine(){
     }
   }
 
-  state.zones.forEach(z=>{ z.yeongGeup+=1; if(z.timberBanTurns>0) z.timberBanTurns-=1; });
+  // (벌채 금지는 이제 턴이 아닌 절대 년차 기준(harvestBanUntilAge)로 판정되므로 여기서 처리할 것 없음)
   state.turn += 1;
   state.choicesThisTurn = 0;
 
@@ -535,6 +645,13 @@ function showEventModal(events){
 
 function closeEventModal(){
   document.getElementById('eventOverlay').classList.remove('show');
+}
+
+function showInfoModal(){
+  document.getElementById('infoOverlay').classList.add('show');
+}
+function closeInfoModal(){
+  document.getElementById('infoOverlay').classList.remove('show');
 }
 
 function saveCheckpoint(turnNum){
@@ -564,6 +681,19 @@ function showEnd(badge,title,text){
   document.getElementById('endTitle').textContent = title;
   document.getElementById('endText').textContent = text;
 
+  lastFinalStats = {
+    gold: state.gold, health: state.health, community: state.community,
+    badge, title, score: Math.round(state.gold + state.health*5 + state.community*5)
+  };
+  scoreSubmitted = false;
+  document.getElementById('playerNameInput').value = '';
+  document.getElementById('playerNameInput').disabled = false;
+  document.getElementById('submitScoreBtn').disabled = false;
+  document.getElementById('submitScoreBtn').textContent = '순위 등록';
+  document.getElementById('leaderboardStatus').textContent = '';
+  document.getElementById('leaderboardList').innerHTML = '';
+  fetchLeaderboard();
+
   const cpBtnEl = document.getElementById('checkpointBtns');
   const available = CHECKPOINT_TURNS.filter(t=>checkpoints[t]);
   cpBtnEl.innerHTML = available.length
@@ -572,6 +702,58 @@ function showEnd(badge,title,text){
     : '';
 
   document.getElementById('overlay').classList.add('show');
+}
+
+async function submitScore(){
+  const nameInput = document.getElementById('playerNameInput');
+  const name = nameInput.value.trim();
+  if(!name){ document.getElementById('leaderboardStatus').textContent = '이름을 입력해주세요.'; return; }
+  if(!lastFinalStats) return;
+  const btn = document.getElementById('submitScoreBtn');
+  btn.disabled = true; btn.textContent = '등록 중...';
+  document.getElementById('leaderboardStatus').textContent = '';
+  try{
+    await fetch(SCRIPT_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        name, score: lastFinalStats.score,
+        gold: lastFinalStats.gold, health: lastFinalStats.health, community: lastFinalStats.community,
+        ending: lastFinalStats.title, ts: new Date().toISOString()
+      })
+    });
+    scoreSubmitted = true;
+    nameInput.disabled = true;
+    btn.textContent = '등록 완료';
+    document.getElementById('leaderboardStatus').textContent = '등록되었습니다!';
+    setTimeout(fetchLeaderboard, 1200); // 시트 반영 시간 대기 후 갱신
+  }catch(err){
+    document.getElementById('leaderboardStatus').textContent = '등록에 실패했습니다. 네트워크를 확인해주세요.';
+    btn.disabled = false; btn.textContent = '순위 등록';
+  }
+}
+
+async function fetchLeaderboard(){
+  const listEl = document.getElementById('leaderboardList');
+  const statusEl = document.getElementById('leaderboardStatus');
+  if(SCRIPT_URL.includes('PASTE_YOUR')){
+    statusEl.textContent = '리더보드 연결 전입니다 (README 참고해서 SCRIPT_URL을 설정하세요).';
+    return;
+  }
+  try{
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    const top = (data.scores||[]).sort((a,b)=>b.score-a.score).slice(0,10);
+    listEl.innerHTML = top.map((row,i)=>`
+      <div class="lb-row">
+        <span class="lb-rank">${i+1}</span>
+        <span class="lb-name">${row.name}<div class="lb-ending">${row.ending||''}</div></span>
+        <span class="lb-score">${row.score}</span>
+      </div>`).join('') || '<div style="color:var(--ink-soft);font-size:13px;">아직 등록된 기록이 없습니다.</div>';
+  }catch(err){
+    statusEl.textContent = '리더보드를 불러오지 못했습니다.';
+  }
 }
 
 function loadCheckpoint(turnNum){
@@ -628,21 +810,33 @@ function renderZones(){
     const div = document.createElement('div');
     div.className = 'zone-tab' + (z.id===state.activeZone?' active':'');
     div.onclick = ()=>{ state.activeZone=z.id; render(); };
-    const rings = Array.from({length:8},(_,i)=>`<div class="ring-seg ${i<z.yeongGeup?'on':''}"></div>`).join('');
+    const decadesGrown = Math.floor(z.ageYears/10);
+    const rings = Array.from({length:8},(_,i)=>`<div class="ring-seg ${i<decadesGrown?'on':''}"></div>`).join('');
     const tendCooldown = Math.max(0, 5-(state.totalYears - z.lastTendYear));
+    const stage = stageInfo(z);
+    const ageNote = z.plantedThisCycle ? ` · ${z.ageYears}년차` : '';
     div.innerHTML = `
-      <h3>${z.name} <span class="yg-badge">영급 ${z.yeongGeup}</span></h3>
+      <h3>${z.name} <span class="yg-badge">${stage.icon} ${stage.label}${ageNote}</span></h3>
       <div class="rings">${rings}</div>
       <div class="tags">
         <span class="tag ${z.roadBuilt?'on':''}">🛤️ 임도${z.roadBuilt?'✓':''}</span>
         <span class="tag ${tendCooldown>0?'banned':''}">🌳 숲가꾸기${tendCooldown>0?` (${tendCooldown}년 대기)`:''}</span>
         <span class="tag ${z.resortBuilt?'used':''}">⛺ 휴양림${z.resortBuilt?'✓':''}</span>
         <span class="tag ${z.carbonUsed?'used':''}">♻️ 탄소크레딧${z.carbonUsed?'✓':''}</span>
-        ${z.timberBanTurns>0?`<span class="tag banned">⛔ 벌채금지 ${z.timberBanTurns}턴</span>`:''}
+        ${(z.harvestBanUntilAge>0 && z.ageYears<z.harvestBanUntilAge)?`<span class="tag banned">⛔ 벌채금지 (${z.harvestBanUntilAge}년차까지)</span>`:''}
       </div>
       <div class="hint">${z.id===state.activeZone ? '📖 장부 펼침' : '👆 눌러서 장부 열기'}</div>`;
     el.appendChild(div);
   });
+
+  const glance = document.getElementById('glanceBar');
+  glance.innerHTML = state.zones.map(z=>{
+    const stage = stageInfo(z);
+    const roadNote = z.roadBuilt ? '' : ' · 임도 없음';
+    const resortNote = z.resortBuilt ? ' · 휴양림 운영중' : '';
+    const ageNote = z.plantedThisCycle ? `(${z.ageYears}년차)` : '';
+    return `<span class="glance-chip"><b>${z.name}</b>: ${stage.icon} ${stage.label}${ageNote}${roadNote}${resortNote}</span>`;
+  }).join('');
 }
 
 function renderActions(){
@@ -696,6 +890,17 @@ function doAction(action){
   action.run();
   state.choicesThisTurn += 1;
   state.totalYears += 1;
+  // 실제 경과 연도에 따라 심어진 모든 구역의 숲 나이가 매년 자동으로 자람 (턴 경계와 무관)
+  state.zones.forEach(z=>{ if(z.plantedThisCycle) z.ageYears += 1; });
+  // 탄소크레딧 발행 구역은 5년마다 자금 +0.5×산림건강도 정기 수익 지급
+  state.zones.forEach(z=>{
+    if(z.carbonUsed && (state.totalYears - z.lastCarbonPayoutYear) >= 5){
+      const payout = 0.5*state.health;
+      state.gold += payout;
+      z.lastCarbonPayoutYear = state.totalYears;
+      log(`[${z.name}] ♻️ 탄소크레딧 정기 수익 +${payout.toFixed(1)}`);
+    }
+  });
   if(checkEndings()){ render(prev); return; }
   if(state.choicesThisTurn >= ACTIONS_PER_TURN){
     pendingEvents = [];
