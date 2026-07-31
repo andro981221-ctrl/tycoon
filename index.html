@@ -813,7 +813,7 @@ function saveCheckpoint(turnNum){
 }
 
 function checkEndings(){
-  if(state.gold <= -10){ showEnd('실패','[경영 실패] 경매로 넘어간 숲','무분별한 투자와 무리한 운영으로 부채를 감당하지 못했습니다. 결국 숲은 경매로 넘어가고, 당신은 씁쓸한 마음으로 산을 떠납니다.','fail-bankrupt'); return true; }
+  if(state.gold <= -5){ showEnd('실패','[경영 실패] 경매로 넘어간 숲','무분별한 투자와 무리한 운영으로 부채를 감당하지 못했습니다. 결국 숲은 경매로 넘어가고, 당신은 씁쓸한 마음으로 산을 떠납니다.','fail-bankrupt'); return true; }
   if(state.health <= 0){ showEnd('실패','[생태 파괴] 민둥산이 된 숲','눈앞의 이익을 위해 숲을 지나치게 훼손했습니다. 이 산에서 지속가능한 미래를 기대하기는 어려워졌습니다.','fail-ecology'); return true; }
   if(state.community <= 0){ showEnd('실패','[지역 갈등] 주민들의 외면','지역사회와의 소통 없이 일방적인 경영을 이어갔습니다. 숲은 소통이 끊긴 고립된 섬이 되었습니다.','fail-community'); return true; }
   if(state.turn > MAX_TURNS){
