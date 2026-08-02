@@ -289,9 +289,13 @@
     font-family:'Noto Serif KR', serif; font-weight:700; font-size:14px;
     color:#CBD6C1; margin:0 0 10px; padding-left:10px; border-left:3px solid var(--gold);
   }
+  .map-zone-row{
+    display:flex; align-items:flex-start; gap:14px; margin-bottom:18px;
+  }
   .map-wrap{
-    position:relative; width:220px; max-width:55%; aspect-ratio:1402/1122;
-    margin:0 0 14px 0;
+    position:relative; flex:none; width:180px;
+    aspect-ratio:1402/1122;
+    margin:0;
   }
   .map-bg{ width:100%; height:100%; object-fit:contain; display:block;
     filter:drop-shadow(0 8px 14px rgba(0,0,0,.45)); }
@@ -304,11 +308,11 @@
   #mapMarker1{ left:51%; top:59%; }
   #mapMarker2{ left:59%; top:16%; }
   .map-marker-ico{
-    width:26px; height:26px; border-radius:50%;
+    width:22px; height:22px; border-radius:50%;
     background:rgba(239,231,216,0.92);
     border:2px solid var(--gold-deep);
     display:flex; align-items:center; justify-content:center;
-    font-size:13px;
+    font-size:11px;
     box-shadow:0 3px 8px rgba(0,0,0,.4);
     transition:transform .15s;
   }
@@ -318,34 +322,15 @@
   }
   .map-marker:hover .map-marker-ico{ transform:scale(1.08); }
   .map-marker-label{
-    font-family:'IBM Plex Mono',monospace; font-size:8px; font-weight:700;
-    color:#fff; background:rgba(0,0,0,.55); padding:1px 5px; border-radius:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:7px; font-weight:700;
+    color:#fff; background:rgba(0,0,0,.55); padding:1px 4px; border-radius:7px;
   }
-  .zones{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:18px;
+  .map-zone-row{
+    display:flex; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:18px;
   }
-  .zone-tab{
-    background:var(--surface); color:var(--ink);
-    border-radius:16px; padding:14px 14px 12px; cursor:pointer;
-    border:2.5px solid transparent;
-    transition:transform .12s, border-color .12s, box-shadow .12s;
-    box-shadow:0 6px 16px var(--paper-shadow);
-    text-align:left;
+  .ledger-col{
+    flex:1; min-width:240px;
   }
-  .zone-tab:hover{transform:translateY(-3px);}
-  .zone-tab.active{border-color:var(--gold-deep); box-shadow:0 10px 24px rgba(200,155,60,.35);}
-  .zone-tab h3{
-    margin:0 0 8px; font-family:'Noto Serif KR',serif; font-size:16.5px;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .zone-tab h3 .yg-badge{
-    font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700;
-    background:var(--moss); color:#fff; padding:2px 8px; border-radius:20px;
-  }
-  .zone-tab .rings{display:flex; gap:2px; margin-bottom:9px;}
-  .zone-tab .ring-seg{width:13px;height:7px;border-radius:2px; background:var(--surface-dim); border:1px solid rgba(0,0,0,.12);}
-  .zone-tab .ring-seg.on{background:var(--moss);}
-  .zone-tab .tags{display:flex; flex-wrap:wrap; gap:5px;}
   .tag{
     font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
     padding:3px 8px; border-radius:20px; background:var(--surface-dim); color:var(--ink-soft);
@@ -353,21 +338,26 @@
   .tag.on{background:var(--moss); color:#fff;}
   .tag.used{background:var(--clay); color:#fff;}
   .tag.banned{background:var(--danger); color:#fff;}
-  .zone-tab .hint{
-    font-size:12px; color:var(--ink-soft); margin-top:8px; font-style:italic;
-  }
 
-  /* ---- Ledger (only shown after zone click) ---- */
-  #ledgerWrap{
-    display:none;
-    animation: slideDown .25s ease;
-  }
-  @keyframes slideDown{ from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+  /* ---- Ledger (side-by-side with map) ---- */
+  #ledgerWrap{ animation: slideDown .2s ease; }
+  @keyframes slideDown{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
   .ledger{
     background:var(--surface); color:var(--ink);
     border-radius:18px; padding:18px;
     box-shadow:0 10px 26px var(--paper-shadow); margin-bottom:20px;
+    min-height:100%;
   }
+  .zone-status{ margin-bottom:14px; }
+  .zone-status .stage-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px;
+    background:var(--moss); color:#fff; padding:4px 10px; border-radius:20px; margin-bottom:8px;
+  }
+  .zone-status .rings{ display:flex; gap:2px; margin-bottom:8px; }
+  .zone-status .ring-seg{ width:13px; height:7px; border-radius:2px; background:var(--surface-dim); border:1px solid rgba(0,0,0,.12); }
+  .zone-status .ring-seg.on{ background:var(--moss); }
+  .zone-status .tags{ display:flex; flex-wrap:wrap; gap:5px; }
   .ledger-head{
     display:flex; justify-content:space-between; align-items:baseline;
     margin-bottom:12px; border-bottom:2px solid var(--line); padding-bottom:10px;
@@ -577,31 +567,33 @@
     </div>
 
     <div class="section-label">구역 선택 · 경영할 구역을 클릭하세요</div>
-    <div id="mapWrap" class="map-wrap">
-      <img src="asset/map.png" alt="산림 지도" class="map-bg"
-        onerror="document.getElementById('mapWrap').style.display='none';">
-      <div class="map-marker" id="mapMarker0" onclick="selectZone(0)">
-        <div class="map-marker-ico"></div>
-        <div class="map-marker-label">1구역</div>
-      </div>
-      <div class="map-marker" id="mapMarker1" onclick="selectZone(1)">
-        <div class="map-marker-ico"></div>
-        <div class="map-marker-label">2구역</div>
-      </div>
-      <div class="map-marker" id="mapMarker2" onclick="selectZone(2)">
-        <div class="map-marker-ico"></div>
-        <div class="map-marker-label">3구역</div>
-      </div>
-    </div>
-    <div class="zones" id="zonesEl"></div>
-
-    <div id="ledgerWrap">
-      <div class="ledger">
-        <div class="ledger-head">
-          <h2 id="ledgerZoneName">1구역 장부</h2>
-          <div class="progress" id="choiceProgress">이번 턴 0 / 10년 경과</div>
+    <div class="map-zone-row">
+      <div id="mapWrap" class="map-wrap">
+        <img src="asset/map.png" alt="산림 지도" class="map-bg"
+          onerror="document.getElementById('mapWrap').style.display='none';">
+        <div class="map-marker" id="mapMarker0" onclick="selectZone(0)">
+          <div class="map-marker-ico"></div>
+          <div class="map-marker-label">1구역</div>
         </div>
-        <div class="actions" id="actionsEl"></div>
+        <div class="map-marker" id="mapMarker1" onclick="selectZone(1)">
+          <div class="map-marker-ico"></div>
+          <div class="map-marker-label">2구역</div>
+        </div>
+        <div class="map-marker" id="mapMarker2" onclick="selectZone(2)">
+          <div class="map-marker-ico"></div>
+          <div class="map-marker-label">3구역</div>
+        </div>
+      </div>
+
+      <div id="ledgerWrap" class="ledger-col">
+        <div class="ledger">
+          <div class="ledger-head">
+            <h2 id="ledgerZoneName">구역을 선택하세요</h2>
+            <div class="progress" id="choiceProgress"></div>
+          </div>
+          <div class="zone-status" id="zoneStatusRow"></div>
+          <div class="actions" id="actionsEl"></div>
+        </div>
       </div>
     </div>
 
@@ -997,7 +989,7 @@ function renderRingDial(){
     circle.setAttribute('stroke-width', current? 1.6 : 1);
     svg.appendChild(circle);
   }
-  document.getElementById('yearLabel').textContent = `${(state.turn-1)*10+1}년`;
+  document.getElementById('yearLabel').textContent = `${state.totalYears}년`;
   document.getElementById('turnLabel').textContent = `${Math.min(state.turn,MAX_TURNS)} / ${MAX_TURNS} 턴`;
 }
 
@@ -1028,31 +1020,6 @@ function renderMapMarkers(){
 }
 
 function renderZones(){
-  const el = document.getElementById('zonesEl');
-  el.innerHTML='';
-  state.zones.forEach(z=>{
-    const div = document.createElement('div');
-    div.className = 'zone-tab' + (z.id===state.activeZone?' active':'');
-    div.onclick = ()=>{ selectZone(z.id); };
-    const decadesGrown = Math.floor(z.ageYears/10);
-    const rings = Array.from({length:8},(_,i)=>`<div class="ring-seg ${i<decadesGrown?'on':''}"></div>`).join('');
-    const tendCooldown = Math.max(0, 5-(state.totalYears - z.lastTendYear));
-    const stage = stageInfo(z);
-    const ageNote = z.plantedThisCycle ? ` · ${z.ageYears}년차` : '';
-    div.innerHTML = `
-      <h3>${z.name} <span class="yg-badge">${stage.icon} ${stage.label}${ageNote}</span></h3>
-      <div class="rings">${rings}</div>
-      <div class="tags">
-        <span class="tag ${z.roadBuilt?'on':''}">🛤️ 임도${z.roadBuilt?'✓':''}</span>
-        <span class="tag ${tendCooldown>0?'banned':''}">🌳 숲가꾸기${tendCooldown>0?` (${tendCooldown}년 대기)`:''}</span>
-        <span class="tag ${z.resortBuilt?'used':''}">⛺ 휴양림${z.resortBuilt?'✓':''}</span>
-        <span class="tag ${z.carbonUsed?'used':''}">♻️ 탄소크레딧${z.carbonUsed?'✓':''}</span>
-        ${(z.harvestBanUntilAge>0 && z.ageYears<z.harvestBanUntilAge)?`<span class="tag banned">⛔ 벌채금지 (${z.harvestBanUntilAge}년차까지)</span>`:''}
-      </div>
-      <div class="hint">${z.id===state.activeZone ? '📖 장부 펼침' : '👆 눌러서 장부 열기'}</div>`;
-    el.appendChild(div);
-  });
-
   const glance = document.getElementById('glanceBar');
   glance.innerHTML = state.zones.map(z=>{
     const stage = stageInfo(z);
@@ -1064,14 +1031,40 @@ function renderZones(){
 }
 
 function renderActions(){
-  const ledgerWrap = document.getElementById('ledgerWrap');
-  if(state.activeZone===null){ ledgerWrap.style.display='none'; return; }
-  ledgerWrap.style.display='block';
+  const nameEl = document.getElementById('ledgerZoneName');
+  const progressEl = document.getElementById('choiceProgress');
+  const statusEl = document.getElementById('zoneStatusRow');
+  const actionsEl = document.getElementById('actionsEl');
+
+  if(state.activeZone===null){
+    nameEl.textContent = '👆 지도에서 구역을 선택하세요';
+    progressEl.textContent = '';
+    statusEl.innerHTML = '';
+    actionsEl.innerHTML = '';
+    return;
+  }
+
   const zone = state.zones[state.activeZone];
-  document.getElementById('ledgerZoneName').textContent = `📖 ${zone.name} 장부`;
-  document.getElementById('choiceProgress').textContent = `이번 턴 ${state.choicesThisTurn} / ${ACTIONS_PER_TURN}년 경과`;
-  const el = document.getElementById('actionsEl');
-  el.innerHTML='';
+  nameEl.textContent = `📖 ${zone.name} 장부`;
+  progressEl.textContent = `이번 턴 ${state.choicesThisTurn} / ${ACTIONS_PER_TURN}년 경과`;
+
+  const decadesGrown = Math.floor(zone.ageYears/10);
+  const rings = Array.from({length:8},(_,i)=>`<div class="ring-seg ${i<decadesGrown?'on':''}"></div>`).join('');
+  const tendCooldown = Math.max(0, 5-(state.totalYears - zone.lastTendYear));
+  const stage = stageInfo(zone);
+  const ageNote = zone.plantedThisCycle ? ` · ${zone.ageYears}년차` : '';
+  statusEl.innerHTML = `
+    <div class="stage-badge">${stage.icon} ${stage.label}${ageNote}</div>
+    <div class="rings">${rings}</div>
+    <div class="tags">
+      <span class="tag ${zone.roadBuilt?'on':''}">🛤️ 임도${zone.roadBuilt?'✓':''}</span>
+      <span class="tag ${tendCooldown>0?'banned':''}">🌳 숲가꾸기${tendCooldown>0?` (${tendCooldown}년 대기)`:''}</span>
+      <span class="tag ${zone.resortBuilt?'used':''}">⛺ 휴양림${zone.resortBuilt?'✓':''}</span>
+      <span class="tag ${zone.carbonUsed?'used':''}">♻️ 탄소크레딧${zone.carbonUsed?'✓':''}</span>
+      ${(zone.harvestBanUntilAge>0 && zone.ageYears<zone.harvestBanUntilAge)?`<span class="tag banned">⛔ 벌채금지 (${zone.harvestBanUntilAge}년차까지)</span>`:''}
+    </div>`;
+
+  actionsEl.innerHTML='';
   getActions(zone).forEach(a=>{
     const btn = document.createElement('button');
     btn.className='action-btn';
@@ -1083,7 +1076,7 @@ function renderActions(){
         <div class="eff">${a.eff}<span class="cond">조건: ${a.cond}</span></div>
       </div>`;
     btn.onclick = ()=>doAction(a);
-    el.appendChild(btn);
+    actionsEl.appendChild(btn);
   });
 }
 
