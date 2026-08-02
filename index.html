@@ -290,20 +290,20 @@
     color:#CBD6C1; margin:0 0 10px; padding-left:10px; border-left:3px solid var(--gold);
   }
   .map-wrap{
-    position:relative; width:100%; aspect-ratio:4/3;
+    position:relative; width:100%; aspect-ratio:1402/1122;
     border-radius:16px; overflow:hidden; margin-bottom:14px;
     background:var(--surface-dim);
     box-shadow:0 10px 26px var(--paper-shadow);
   }
-  .map-bg{ width:100%; height:100%; object-fit:cover; display:block; }
+  .map-bg{ width:100%; height:100%; object-fit:contain; display:block; }
   .map-marker{
-    position:absolute; top:55%; transform:translate(-50%,-50%);
+    position:absolute; transform:translate(-50%,-50%);
     display:flex; flex-direction:column; align-items:center; gap:2px;
     cursor:pointer;
   }
-  #mapMarker0{ left:18%; }
-  #mapMarker1{ left:50%; }
-  #mapMarker2{ left:82%; }
+  #mapMarker0{ left:21%; top:33%; }
+  #mapMarker1{ left:51%; top:59%; }
+  #mapMarker2{ left:59%; top:16%; }
   .map-marker-ico{
     width:52px; height:52px; border-radius:50%;
     background:rgba(239,231,216,0.92);
