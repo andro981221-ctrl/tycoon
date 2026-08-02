@@ -330,7 +330,10 @@
     position:absolute; top:-8px; right:-8px; font-size:15px;
     filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));
   }
-  .map-badge-resort{ top:-8px; left:-8px; right:auto; }
+  .map-badge-resort{
+    top:-30px; left:50%; right:auto; transform:translateX(-50%);
+    font-size:26px;
+  }
   .map-zone-row{
     display:flex; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:18px;
   }
@@ -470,6 +473,8 @@
   <button id="coverStartBtn" onclick="showComic()">🌲 게임 시작</button>
 </div>
 
+<audio id="bgmAudio" src="asset/bgm.mp3" loop preload="none"></audio>
+
 <!-- ============== COMIC (4-PANEL STORY) SCREEN ============== -->
 <div id="comicScreen">
   <div class="comic-card">
@@ -568,7 +573,10 @@
 
     <div class="game-title-row">
       <h1>🌲 100년숲 경영 대장</h1>
-      <button class="info-btn" onclick="showInfoModal()">?</button>
+      <div style="display:flex; gap:6px;">
+        <button class="info-btn" id="bgmToggleBtn" onclick="toggleBgm()">🔊</button>
+        <button class="info-btn" onclick="showInfoModal()">?</button>
+      </div>
     </div>
     </div>
 
@@ -1181,11 +1189,27 @@ function nextComicPanel(){
   }
 }
 
+let bgmMuted = false;
+
+function startBgm(){
+  const audio = document.getElementById('bgmAudio');
+  audio.volume = 0.4;
+  audio.play().catch(()=>{ /* 파일이 없거나 자동재생이 막힌 경우 조용히 무시 */ });
+}
+
+function toggleBgm(){
+  const audio = document.getElementById('bgmAudio');
+  bgmMuted = !bgmMuted;
+  audio.muted = bgmMuted;
+  document.getElementById('bgmToggleBtn').textContent = bgmMuted ? '🔇' : '🔊';
+}
+
 function showComic(){
   document.getElementById('coverScreen').style.display='none';
   document.getElementById('comicScreen').style.display='flex';
   comicPanelIndex = 0;
   renderComicPanel();
+  startBgm();
 
   // 이미지 로드 실패 시 이모지 4컷 그리드로 대체 표시
   const testImg = new Image();
