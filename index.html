@@ -293,7 +293,7 @@
     display:flex; align-items:flex-start; gap:14px; margin-bottom:18px;
   }
   .map-wrap{
-    position:relative; flex:none; width:180px;
+    position:relative; flex:none; width:300px; max-width:90%;
     aspect-ratio:1402/1122;
     margin:0;
   }
@@ -308,23 +308,29 @@
   #mapMarker1{ left:51%; top:67%; }
   #mapMarker2{ left:59%; top:25%; }
   .map-marker-ico{
-    width:22px; height:22px; border-radius:50%;
+    position:relative;
+    width:36px; height:36px; border-radius:50%;
     background:rgba(239,231,216,0.92);
-    border:2px solid var(--gold-deep);
+    border:2.5px solid var(--gold-deep);
     display:flex; align-items:center; justify-content:center;
-    font-size:11px;
-    box-shadow:0 3px 8px rgba(0,0,0,.4);
+    font-size:18px;
+    box-shadow:0 4px 10px rgba(0,0,0,.4);
     transition:transform .15s;
   }
   .map-marker.active .map-marker-ico{
     border-color:#fff; transform:scale(1.15);
-    box-shadow:0 0 0 3px rgba(200,155,60,.5), 0 3px 8px rgba(0,0,0,.4);
+    box-shadow:0 0 0 3px rgba(200,155,60,.5), 0 4px 10px rgba(0,0,0,.4);
   }
   .map-marker:hover .map-marker-ico{ transform:scale(1.08); }
   .map-marker-label{
-    font-family:'IBM Plex Mono',monospace; font-size:7px; font-weight:700;
-    color:#fff; background:rgba(0,0,0,.55); padding:1px 4px; border-radius:7px;
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700;
+    color:#fff; background:rgba(0,0,0,.55); padding:1px 6px; border-radius:8px;
   }
+  .map-marker-badge{
+    position:absolute; top:-8px; right:-8px; font-size:15px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));
+  }
+  .map-badge-resort{ top:-8px; left:-8px; right:auto; }
   .map-zone-row{
     display:flex; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:18px;
   }
@@ -572,15 +578,27 @@
         <img src="asset/map.png" alt="산림 지도" class="map-bg"
           onerror="document.getElementById('mapWrap').style.display='none';">
         <div class="map-marker" id="mapMarker0" onclick="selectZone(0)">
-          <div class="map-marker-ico"></div>
+          <div class="map-marker-ico">
+            <span class="map-stage-icon" id="mapStage0"></span>
+            <span class="map-marker-badge map-badge-resort" id="mapResort0"></span>
+            <span class="map-marker-badge" id="mapFire0"></span>
+          </div>
           <div class="map-marker-label">1구역</div>
         </div>
         <div class="map-marker" id="mapMarker1" onclick="selectZone(1)">
-          <div class="map-marker-ico"></div>
+          <div class="map-marker-ico">
+            <span class="map-stage-icon" id="mapStage1"></span>
+            <span class="map-marker-badge map-badge-resort" id="mapResort1"></span>
+            <span class="map-marker-badge" id="mapFire1"></span>
+          </div>
           <div class="map-marker-label">2구역</div>
         </div>
         <div class="map-marker" id="mapMarker2" onclick="selectZone(2)">
-          <div class="map-marker-ico"></div>
+          <div class="map-marker-ico">
+            <span class="map-stage-icon" id="mapStage2"></span>
+            <span class="map-marker-badge map-badge-resort" id="mapResort2"></span>
+            <span class="map-marker-badge" id="mapFire2"></span>
+          </div>
           <div class="map-marker-label">3구역</div>
         </div>
       </div>
@@ -715,7 +733,7 @@ function freshState(){
     zones: [0,1,2].map(i => ({
       id:i, name:`${i+1}구역`,
       ageYears:0, roadBuilt:false,
-      resortBuilt:false, carbonUsed:false, plantedThisCycle:false,
+      resortBuilt:false, carbonUsed:false, plantedThisCycle:false, recentlyBurned:false,
       fireResistStacks:0, harvestBanUntilAge:0, lastGatherYear:-99, lastTendYear:-99, lastCarbonPayoutYear:-99
     })),
     log: [], ended:false
@@ -748,7 +766,7 @@ function getActions(zone){
     { key:'plant', name:'조림', cost:'자금 -2 · 건강도 +2 · 만족도 +1',
       eff:'심으면 매년 자라기 시작 (개벌 후 재조림 가능)', cond:'민둥산 상태에서 1회만 가능',
       enabled: !zone.plantedThisCycle,
-      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.ageYears=0; zone.plantedThisCycle=true; log(`[${zone.name}] 🌱 조림 완료`); } },
+      run(){ state.gold-=2; state.health+=2; state.community+=1; zone.ageYears=0; zone.plantedThisCycle=true; zone.recentlyBurned=false; log(`[${zone.name}] 🌱 조림 완료`); } },
     { key:'road', name:'임도 설치', cost:'자금 -1 · 건강도 -1',
       eff:'미설치 시 목재 생산 불가 · 산불 피해 30% 감소', cond:'구역당 1회',
       enabled: !road,
@@ -796,12 +814,16 @@ function endOfTurnRoutine(){
       const hitZone = state.zones[Math.floor(Math.random()*state.zones.length)];
       state.gold -= 10.05*dmgMul; state.health -= 5*dmgMul; state.community -= 4.05*dmgMul;
       const wasPlanted = hitZone.plantedThisCycle;
+      const hadResort = hitZone.resortBuilt;
       hitZone.ageYears = 0;
       hitZone.plantedThisCycle = false;
       hitZone.carbonUsed = false;
       hitZone.harvestBanUntilAge = 0;
+      hitZone.resortBuilt = false;
+      hitZone.recentlyBurned = true;
       const msg = `자금 -${(10.05*dmgMul).toFixed(1)} · 건강도 -${(5*dmgMul).toFixed(1)} · 만족도 -${(4.05*dmgMul).toFixed(1)}`
-        + (wasPlanted ? ` · ${hitZone.name} 산림 전소(민둥산화, 탄소크레딧 효과 소멸)` : '');
+        + (wasPlanted ? ` · ${hitZone.name} 산림 전소(민둥산화, 탄소크레딧 효과 소멸)` : '')
+        + (hadResort ? ` · 휴양림 소실` : '');
       log(`🔥 ${hitZone.name} 산불 발생! ${msg}`, true);
       pendingEvents.push({icon:'🔥', title:`${hitZone.name} 산불 발생!`, text:msg});
     } else {
@@ -1021,7 +1043,9 @@ function renderMapMarkers(){
     const marker = document.getElementById(`mapMarker${z.id}`);
     if(!marker) return;
     const stage = stageInfo(z);
-    marker.querySelector('.map-marker-ico').textContent = stage.icon;
+    document.getElementById(`mapStage${z.id}`).textContent = stage.icon;
+    document.getElementById(`mapResort${z.id}`).textContent = z.resortBuilt ? '⛺' : '';
+    document.getElementById(`mapFire${z.id}`).textContent = z.recentlyBurned ? '🔥' : '';
     marker.classList.toggle('active', z.id===state.activeZone);
   });
 }
